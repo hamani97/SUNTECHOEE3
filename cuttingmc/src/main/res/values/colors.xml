@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- common -->
+    <color name="textColorPrimary">#000</color>
+    <color name="textColorSecondary">#333</color>
+    <color name="white">#fff</color>
+    <color name="black">#000</color>
+    <color name="bgPrimary">#fff</color>
+    <color name="transparent">#00ff0000</color>
+    <color name="divider">#B6B6B6</color>
+    <color name="testColor1">#F00</color>
+    <color name="testColor2">#0F0</color>
+    <color name="testColor3">#00F</color>
+    <color name="testColor4">#FF0</color>
+    <!-- common -->
+
+
+    <color name="bottom_text_color">#f8ad13</color>
+    <color name="bottom_text_color_for_demo">#f00</color>
+
+    <color name="list_item_bg_color">#090c0f</color>
+    <color name="list_item_text_color">#fff</color>
+    <color name="list_item_highlight_text_color">#f00</color>
+</resources>
