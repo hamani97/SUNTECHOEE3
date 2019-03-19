@@ -37,6 +37,10 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    fun changeFragment(pos:Int) {
+        vp_fragments.setCurrentItem(pos, true)
+    }
+
     private class TabAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         private val mFragments = ArrayList<Fragment>()
         private val mFragmentTitles = ArrayList<String>()

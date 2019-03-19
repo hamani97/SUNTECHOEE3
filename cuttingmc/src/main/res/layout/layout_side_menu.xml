@@ -11,47 +11,54 @@
         android:background="#192533">
 
         <ImageButton
-            android:id="@+id/btn_actual_count_edit_for_demo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginBottom="70dp"
-            android:background="@drawable/btn_top_icon_actual_count_edit" />
+            android:id="@+id/btn_home"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_left_icon_home_on" />
 
         <ImageButton
             android:id="@+id/btn_push_to_app"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_push_to_app" />
 
         <ImageButton
             android:id="@+id/btn_worksheet"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_worksheet" />
 
         <ImageButton
             android:id="@+id/btn_actual_count_edit"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_actual_count_edit" />
 
         <ImageButton
             android:id="@+id/btn_downtime_for_demo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="60dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_downtime" />
 
         <ImageButton
             android:id="@+id/btn_defective_info_for_demo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="70dp"
+            android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_defective_info" />
+
+        <ImageButton
+            android:id="@+id/btn_setting"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_left_icon_setting_off" />
 
     </LinearLayout>
 </LinearLayout>

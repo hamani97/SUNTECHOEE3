@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.suntech.oee.cuttingmc">
+    package="com.suntech.oee.cutting">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
+        android:name=".BaseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_background"
         android:label="@string/app_name"
@@ -38,9 +39,24 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/usb_device_filter" />
         </activity>
-        <activity android:name=".ComponentActivity" android:screenOrientation="landscape" />
-        <activity android:name=".WorkInfoActivity" android:screenOrientation="landscape" />
+
+        <service
+            android:name=".service.UsbService"
+            android:enabled="true" />
+
         <activity android:name=".SettingActivity" android:screenOrientation="landscape" />
+        <activity android:name=".WorkInfoActivity" android:screenOrientation="landscape" />
+        <activity android:name=".DesignInfoActivity" android:screenOrientation="landscape" />
+        <activity android:name=".popup.ComponentActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.ProductListActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.DownTimeActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.DownTimeInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.DefectiveActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.DefectiveInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.WorkSheetActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.PushActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.ActualCountEditActivity" android:theme="@style/AppTheme.PopupOverlay" />
+        <activity android:name=".popup.ActualCountEditInputActivity" android:theme="@style/AppTheme.PopupOverlay" />
     </application>
 
 </manifest>

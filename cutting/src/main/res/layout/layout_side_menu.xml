@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="90dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:background="#192533">
+
+        <ImageButton
+            android:id="@+id/btn_actual_count_edit_for_demo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/btn_top_icon_actual_count_edit"/>
+
+        <ImageButton
+            android:id="@+id/btn_downtime_for_demo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="60dp"
+            android:background="@drawable/btn_top_icon_downtime"/>
+
+        <ImageButton
+            android:id="@+id/btn_defective_info_for_demo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/btn_top_icon_defective_info"/>
+
+
+
+        <ImageButton
+            android:id="@+id/btn_worksheet_for_demo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginBottom="70dp"
+            android:background="@drawable/btn_top_icon_worksheet"/>
+
+
+    </LinearLayout>
+</LinearLayout>
