@@ -1,5 +1,6 @@
 package com.suntech.oee.cuttingmc
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,10 @@ class HomeFragment : BaseFragment() {
         tv_app_version.text = "v "+ activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
 
         btn_count_view.setOnClickListener { clickCountView() }
-//        btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
+        btn_component_info.setOnClickListener { clickComponentInfo() }
         btn_work_info.setOnClickListener { clickWorkInfo() }
-        btn_design_info.setOnClickListener { clickDesignInfo() }
+//        btn_design_info.setOnClickListener { clickDesignInfo() }
+        btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
 
         updateView()
     }
@@ -62,8 +64,8 @@ class HomeFragment : BaseFragment() {
 //            Toast.makeText(activity, getString(R.string.msg_no_setting), Toast.LENGTH_SHORT).show()
 //            return
 //        }
-//        val intent = Intent(activity, WorkInfoActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(activity, WorkInfoActivity::class.java)
+        startActivity(intent)
     }
 
     private fun clickDesignInfo() {
@@ -89,5 +91,10 @@ class HomeFragment : BaseFragment() {
 //                (activity as MainActivity).startNewProduct(idx, pieces_info, cycle_time, model, article, material_way, component)
 //            }
 //        })
+    }
+
+    private fun clickComponentInfo() {
+        val intent = Intent(activity, WorkInfoActivity::class.java)
+        startActivity(intent)
     }
 }

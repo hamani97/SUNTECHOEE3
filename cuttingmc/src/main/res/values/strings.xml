@@ -2,6 +2,7 @@
     <string name="app_name">SUNTECH Cutting M/C</string>
 
     <!-- 공통 메시지 -->
+    <string name="save">Save</string>
     <string name="confirm">Confirm</string>
     <string name="notice">Notice</string>
     <string name="complete">Completed</string>
@@ -54,6 +55,7 @@
     <string name="label_setting">SETTING</string>
     <string name="label_work_info">WORK INFO</string>
     <string name="label_design_info">DESIGN INFO</string>
+    <string name="label_component_info">COMPONENT INFO</string>
     <string name="bottom_label_machine_info">MACHINE INFO</string>
     <string name="bottom_label_operator_info">OPERATOR INFO</string>
     <string name="bottom_label_employee_number">Employee Number : \u0020</string>
