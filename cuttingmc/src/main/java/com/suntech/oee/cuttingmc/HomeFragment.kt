@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.suntech.oee.cuttingmc.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.layout_side_menu.*
 
 class HomeFragment : BaseFragment() {
 
@@ -22,6 +23,8 @@ class HomeFragment : BaseFragment() {
         btn_work_info.setOnClickListener { clickWorkInfo() }
 //        btn_design_info.setOnClickListener { clickDesignInfo() }
         btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
+
+        btn_home.setOnClickListener { (activity as MainActivity).changeFragment(0) }
 
         updateView()
     }
@@ -50,11 +53,11 @@ class HomeFragment : BaseFragment() {
     private fun clickCountView() {
 //        val no = AppGlobal.instance.get_worker_no()
 //        val name = AppGlobal.instance.get_worker_name()
-//        if (no==""||name=="") {
+//        if (no=="" || name=="") {
 //            Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
 //            return
 //        }
-//        (activity as MainActivity).changeFragment(1)
+        (activity as MainActivity).changeFragment(1)
     }
     private fun clickWorkInfo() {
 //        val f = AppGlobal.instance.get_factory()
@@ -94,7 +97,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun clickComponentInfo() {
-        val intent = Intent(activity, WorkInfoActivity::class.java)
+        val intent = Intent(activity, ComponentActivity::class.java)
         startActivity(intent)
     }
 }
