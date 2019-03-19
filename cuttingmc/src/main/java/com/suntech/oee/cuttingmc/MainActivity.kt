@@ -10,6 +10,7 @@ import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.base.BaseFragment
 import com.suntech.oee.cuttingmc.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.layout_side_menu.*
 import java.util.*
 
 class MainActivity : BaseActivity() {
@@ -23,6 +24,12 @@ class MainActivity : BaseActivity() {
     }
 
     private fun initView() {
+        if (AppGlobal.instance.get_long_touch()) {
+            btn_home.setOnLongClickListener { changeFragment(0); true }
+        } else {
+            btn_home.setOnClickListener { changeFragment(0) }
+        }
+
         val adapter = TabAdapter(supportFragmentManager)
         adapter.addFragment(HomeFragment(), "")
         adapter.addFragment(CountViewFragment(), "")

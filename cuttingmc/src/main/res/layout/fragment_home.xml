@@ -33,8 +33,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="22dp"
-                        android:text="SUNTECH OEE System"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="SUNTECH IoT System"
                         android:textSize="32sp"
                         android:textColor="#fff"
                         android:textStyle="bold"/>
@@ -45,7 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
                         android:text="."
-                        android:textSize="16sp"
+                        android:textSize="24sp"
                         android:textColor="#fff"/>
 
                 </LinearLayout>
@@ -59,7 +60,7 @@
 
                     <Button
                         android:id="@+id/btn_count_view"
-                        android:layout_width="380dp"
+                        android:layout_width="400dp"
                         android:layout_height="180dp"
                         android:layout_margin="8dp"
                         android:background="#db4030"
@@ -71,7 +72,7 @@
 
                     <Button
                         android:id="@+id/btn_component_info"
-                        android:layout_width="380dp"
+                        android:layout_width="400dp"
                         android:layout_height="180dp"
                         android:layout_margin="8dp"
                         android:background="#f8ad13"
@@ -91,7 +92,7 @@
 
                     <Button
                         android:id="@+id/btn_work_info"
-                        android:layout_width="380dp"
+                        android:layout_width="400dp"
                         android:layout_height="180dp"
                         android:layout_margin="8dp"
                         android:background="#3f8cd6"
@@ -103,7 +104,7 @@
 
                     <Button
                         android:id="@+id/btn_setting_view"
-                        android:layout_width="380dp"
+                        android:layout_width="400dp"
                         android:layout_height="180dp"
                         android:layout_margin="8dp"
                         android:background="#61c536"

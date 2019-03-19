@@ -43,6 +43,9 @@ class AppGlobal private constructor() {
     fun set_line(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_line", idx) }
     fun get_line() : String { return UtilLocalStorage.getString(instance._context!!, "current_line") }
 
+    fun set_long_touch(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_long_touch", state) }
+    fun get_long_touch() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_long_touch") }
+
     // 디바이스
     @Throws(java.io.IOException::class)
     fun loadFileAsString(filePath: String): String {

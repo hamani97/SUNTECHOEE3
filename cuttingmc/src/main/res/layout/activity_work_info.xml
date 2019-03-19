@@ -20,10 +20,31 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="1080dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btn_work_info_server"
+                    style="@style/tab_btn"
+                    android:layout_width="150dp"
+                    android:background="#ba8e00"
+                    android:stateListAnimator="@null"
+                    android:text="Server" />
+                <Button
+                    android:id="@+id/btn_work_info_manual"
+                    style="@style/tab_btn"
+                    android:layout_width="150dp"
+                    android:stateListAnimator="@null"
+                    android:text="Manual" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="1080dp"
@@ -37,55 +58,32 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center"
-                        android:text="@string/title_available_info"
-                        android:textSize="24sp"
-                        android:textColor="#fff"
-                        android:background="#000"/>
-
+                    <!--<TextView-->
+                        <!--style="@style/section_title_text"-->
+                        <!--android:text="@string/title_available_info" />-->
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:background="#304053">
+                        style="@style/grid_header"
+                        android:layout_width="match_parent">
                         <TextView
+                            style="@style/grid_header_text"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/list_item_shift"
-                            android:textSize="24sp"
-                            android:textColor="#fff"/>
+                            android:text="@string/list_item_shift" />
                         <TextView
+                            style="@style/grid_header_text"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/list_item_work_time"
-                            android:textSize="24sp"
-                            android:textColor="#fff"/>
+                            android:text="@string/list_item_work_time" />
                         <TextView
+                            style="@style/grid_header_text"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/list_header_planned_time1"
-                            android:textSize="24sp"
-                            android:textColor="#fff"/>
+                            android:text="@string/list_header_planned_time1" />
                         <TextView
+                            style="@style/grid_header_text"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="@string/list_header_planned_time2"
-                            android:textSize="24sp"
-                            android:textColor="#fff"/>
+                            android:text="@string/list_header_planned_time2" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -94,16 +92,13 @@
                         android:layout_marginBottom="8dp"
                         android:orientation="horizontal"
                         android:background="#000">
-
                         <ListView
                             android:id="@+id/lv_available_info"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:divider="@color/list_item_bg_color"
                             android:dividerHeight="0dp"
-                            android:background="@color/list_item_bg_color"
-                            />
-
+                            android:background="@color/list_item_bg_color" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -119,37 +114,21 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginBottom="12dp"
-                            android:gravity="center"
-                            android:text="@string/title_operator_info"
-                            android:textSize="24sp"
-                            android:textColor="#fff"
-                            android:background="#000"/>
-
+                            style="@style/section_title_text"
+                            android:text="@string/title_operator_info" />
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:background="#304053">
+                            style="@style/grid_header"
+                            android:layout_width="match_parent">
                             <TextView
+                                style="@style/grid_header_text"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/list_header_employee_number"
-                                android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:text="@string/list_header_employee_number" />
                             <TextView
+                                style="@style/grid_header_text"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/list_header_name"
-                                android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:text="@string/list_header_name" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -158,44 +137,26 @@
                             android:layout_marginBottom="8dp"
                             android:orientation="horizontal"
                             android:background="#000">
-
                             <ListView
                                 android:id="@+id/lv_operator_info"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:divider="@color/list_item_bg_color"
                                 android:dividerHeight="0dp"
-                                android:background="@color/list_item_bg_color"
-                                />
+                                android:background="@color/list_item_bg_color" />
 
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginBottom="8dp"
-                            android:orientation="horizontal">
-
+                            style="@style/setting_line">
                             <TextView
-                                android:layout_width="120dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="8dp"
-                                android:gravity="center"
-                                android:text="@string/search"
-                                android:textSize="20sp"
-                                android:textColor="#fff"
-                                android:background="#2f3f51"/>
-
+                                style="@style/setting_line_title"
+                                android:text="@string/search" />
                             <EditText
                                 android:id="@+id/et_setting_server_ip"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:paddingLeft="10dp"
-                                android:gravity="start|center_vertical"
+                                style="@style/setting_line_data"
                                 android:text=""
-                                android:textSize="20sp"
-                                android:textColor="#fff"
-                                android:background="#87c947"/>
+                                android:background="#87c947" />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -205,37 +166,22 @@
                         android:layout_marginLeft="40dp"
                         android:orientation="vertical">
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_marginBottom="12dp"
-                            android:gravity="center"
-                            android:text="@string/title_last_worker"
-                            android:textSize="24sp"
-                            android:textColor="#fff"
-                            android:background="#000"/>
+                            style="@style/section_title_text"
+                            android:text="@string/title_last_worker" />
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:background="#304053">
+                            style="@style/grid_header"
+                            android:layout_width="match_parent">
                             <TextView
+                                style="@style/grid_header_text"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/list_header_employee_number"
-                                android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:text="@string/list_header_employee_number" />
                             <TextView
+                                style="@style/grid_header_text"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="@string/list_header_name"
-                                android:textSize="24sp"
-                                android:textColor="#fff"/>
+                                android:text="@string/list_header_name" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -244,22 +190,18 @@
                             android:layout_marginBottom="8dp"
                             android:background="#000"
                             android:orientation="vertical">
-
                             <ListView
                                 android:id="@+id/lv_last_worker"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:divider="@color/list_item_bg_color"
                                 android:dividerHeight="0dp"
-                                android:background="@color/list_item_bg_color"
-                                />
+                                android:background="@color/list_item_bg_color" />
 
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-
             </LinearLayout>
-
         </LinearLayout>
 
         <LinearLayout
@@ -269,7 +211,6 @@
             android:paddingBottom="20dp"
             android:gravity="end"
             android:orientation="horizontal">
-
             <Button
                 android:id="@+id/btn_setting_cancel"
                 android:layout_width="180dp"
@@ -282,7 +223,6 @@
                 android:textSize="24sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
-
             <Button
                 android:id="@+id/btn_setting_confirm"
                 android:layout_width="180dp"
@@ -295,7 +235,6 @@
                 android:textSize="24sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
-
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

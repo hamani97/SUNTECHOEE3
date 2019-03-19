@@ -24,8 +24,6 @@ class HomeFragment : BaseFragment() {
 //        btn_design_info.setOnClickListener { clickDesignInfo() }
         btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
 
-        btn_home.setOnClickListener { (activity as MainActivity).changeFragment(0) }
-
         updateView()
     }
 
