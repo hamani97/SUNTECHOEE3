@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-        <LinearLayout
-            style="@style/tab_btn_block">
+        <LinearLayout style="@style/tab_btn_block">
             <Button
                 android:id="@+id/btn_work_info_server"
                 style="@style/tab_btn_on"
@@ -32,7 +31,7 @@
                 android:text="Manual" />
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -42,74 +41,548 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_work_info_manual"
                 android:layout_width="1080dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <!-- AVAILABLE INFO -->
+                <TextView
+                    style="@style/section_title_text"
+                    android:text="@string/title_available_info" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical">
-                    <!--<TextView-->
-                    <!--style="@style/section_title_text"-->
-                    <!--android:text="@string/title_available_info" />-->
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        style="@style/section_title_text"
+                        android:layout_width="450dp"
+                        android:layout_marginLeft="140dp"
+                        android:text="Work Time"
+                        android:background="@color/bottom_text_color" />
+                    <TextView
+                        style="@style/section_title_text"
+                        android:layout_width="450dp"
+                        android:layout_marginLeft="40dp"
+                        android:text="Planned Time"
+                        android:background="@color/tab_on_bg_color" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
                     <LinearLayout
-                        style="@style/grid_header"
-                        android:layout_width="match_parent">
+                        android:layout_width="450dp"
+                        android:layout_marginLeft="140dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
                         <TextView
-                            style="@style/grid_header_text"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/list_item_shift" />
+                            android:gravity="center"
+                            android:text="Start"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
                         <TextView
-                            style="@style/grid_header_text"
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/list_item_work_time" />
-                        <TextView
-                            style="@style/grid_header_text"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="@string/list_header_planned_time1" />
-                        <TextView
-                            style="@style/grid_header_text"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:text="@string/list_header_planned_time2" />
+                            android:gravity="center"
+                            android:text="End"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
                     </LinearLayout>
-
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginBottom="8dp"
-                        android:orientation="horizontal"
-                        android:background="#000">
-                        <ListView
-                            android:id="@+id/lv_available_info"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:divider="@color/list_item_bg_color"
-                            android:dividerHeight="0dp"
-                            android:background="@color/list_item_bg_color" />
+                        android:layout_width="450dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Start"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="End"
+                            android:textColor="@color/white"
+                            android:textSize="20sp" />
                     </LinearLayout>
-
                 </LinearLayout>
 
-                <!-- OPERATOR INFO -->
+                <!-- 1 Shift -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
                     android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="520dp"
+                    <TextView
+                        android:layout_width="140dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_gravity="center"
+                        android:text="1 SHIFT"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="450dp"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
                         <TextView
-                            style="@style/section_title_text"
-                            android:text="@string/title_operator_info" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="~"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="450dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="40dp"
+                        android:orientation="horizontal">
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="~"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 2 Shift -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="2 SHIFT"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="450dp"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="~"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="450dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="40dp"
+                        android:orientation="horizontal">
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="~"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- 3 Shift -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="3 SHIFT"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                    <LinearLayout
+                        android:layout_width="450dp"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal">
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="~"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="450dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="40dp"
+                        android:orientation="horizontal">
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text="~"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:gravity="center"
+                            android:text=":"
+                            android:textSize="25sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"/>
+                        <EditText
+                            style="@style/setting_line_data"
+                            android:layout_width="70dp"
+                            android:layout_marginLeft="20dp"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textSize="20sp"
+                            android:background="#87c947" />
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_work_info_server"
+                android:layout_width="1080dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center_horizontal"-->
+            <!--android:focusable="true"-->
+            <!--android:focusableInTouchMode="true"-->
+            <!--android:orientation="vertical">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="1080dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!-- AVAILABLE INFO -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical">
+                        <!--<TextView-->
+                        <!--style="@style/section_title_text"-->
+                        <!--android:text="@string/title_available_info" />-->
                         <LinearLayout
                             style="@style/grid_header"
                             android:layout_width="match_parent">
@@ -117,86 +590,144 @@
                                 style="@style/grid_header_text"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
-                                android:text="@string/list_header_employee_number" />
+                                android:text="@string/list_item_shift" />
                             <TextView
                                 style="@style/grid_header_text"
                                 android:layout_width="0dp"
                                 android:layout_weight="1"
-                                android:text="@string/list_header_name" />
+                                android:text="@string/list_item_work_time" />
+                            <TextView
+                                style="@style/grid_header_text"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/list_header_planned_time1" />
+                            <TextView
+                                style="@style/grid_header_text"
+                                android:layout_width="0dp"
+                                android:layout_weight="1"
+                                android:text="@string/list_header_planned_time2" />
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="146dp"
+                            android:layout_height="100dp"
                             android:layout_marginBottom="8dp"
                             android:orientation="horizontal"
                             android:background="#000">
                             <ListView
-                                android:id="@+id/lv_operator_info"
+                                android:id="@+id/lv_available_info"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:divider="@color/list_item_bg_color"
                                 android:dividerHeight="0dp"
                                 android:background="@color/list_item_bg_color" />
-
                         </LinearLayout>
 
-                        <LinearLayout
-                            style="@style/setting_line">
-                            <TextView
-                                style="@style/setting_line_title"
-                                android:text="@string/search" />
-                            <EditText
-                                android:id="@+id/et_setting_server_ip"
-                                style="@style/setting_line_data"
-                                android:text=""
-                                android:background="#87c947" />
-                        </LinearLayout>
                     </LinearLayout>
 
+                    <!-- OPERATOR INFO -->
                     <LinearLayout
-                        android:layout_width="520dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
-                        android:orientation="vertical">
-                        <TextView
-                            style="@style/section_title_text"
-                            android:text="@string/title_last_worker" />
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            style="@style/grid_header"
-                            android:layout_width="match_parent">
+                            android:layout_width="520dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
                             <TextView
-                                style="@style/grid_header_text"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:text="@string/list_header_employee_number" />
-                            <TextView
-                                style="@style/grid_header_text"
-                                android:layout_width="0dp"
-                                android:layout_weight="1"
-                                android:text="@string/list_header_name" />
+                                style="@style/section_title_text"
+                                android:text="@string/title_operator_info" />
+                            <LinearLayout
+                                style="@style/grid_header"
+                                android:layout_width="match_parent">
+                                <TextView
+                                    style="@style/grid_header_text"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/list_header_employee_number" />
+                                <TextView
+                                    style="@style/grid_header_text"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/list_header_name" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="146dp"
+                                android:layout_marginBottom="8dp"
+                                android:orientation="horizontal"
+                                android:background="#000">
+                                <ListView
+                                    android:id="@+id/lv_operator_info"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:divider="@color/list_item_bg_color"
+                                    android:dividerHeight="0dp"
+                                    android:background="@color/list_item_bg_color" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:text="@string/search" />
+                                <EditText
+                                    android:id="@+id/et_setting_server_ip"
+                                    style="@style/setting_line_data"
+                                    android:text=""
+                                    android:background="#87c947" />
+                            </LinearLayout>
                         </LinearLayout>
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="200dp"
-                            android:layout_marginBottom="8dp"
-                            android:background="#000"
+                            android:layout_width="520dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
                             android:orientation="vertical">
-                            <ListView
-                                android:id="@+id/lv_last_worker"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:divider="@color/list_item_bg_color"
-                                android:dividerHeight="0dp"
-                                android:background="@color/list_item_bg_color" />
+                            <TextView
+                                style="@style/section_title_text"
+                                android:text="@string/title_last_worker" />
 
+                            <LinearLayout
+                                style="@style/grid_header"
+                                android:layout_width="match_parent">
+                                <TextView
+                                    style="@style/grid_header_text"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/list_header_employee_number" />
+                                <TextView
+                                    style="@style/grid_header_text"
+                                    android:layout_width="0dp"
+                                    android:layout_weight="1"
+                                    android:text="@string/list_header_name" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="200dp"
+                                android:layout_marginBottom="8dp"
+                                android:background="#000"
+                                android:orientation="vertical">
+                                <ListView
+                                    android:id="@+id/lv_last_worker"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:divider="@color/list_item_bg_color"
+                                    android:dividerHeight="0dp"
+                                    android:background="@color/list_item_bg_color" />
+
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+                <!--</LinearLayout>-->
+
             </LinearLayout>
-        </LinearLayout>
+        </FrameLayout>
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"

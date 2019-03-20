@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <LinearLayout
-            style="@style/tab_btn_block">
+        <LinearLayout style="@style/tab_btn_block">
             <Button
                 android:id="@+id/btn_setting_system"
                 style="@style/tab_btn_on"
@@ -38,7 +37,7 @@
                 android:text="TARGET SETTING" />
         </LinearLayout>
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -48,9 +47,294 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/layout_setting_target"
                 android:layout_width="1080dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/section_title_text"
+                    android:text="@string/title_count_target_type" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        style="@style/setting_line">
+                        <TextView
+                            android:id="@+id/tv_setting_target_type_server"
+                            style="@style/setting_line_title"
+                            android:layout_width="200dp"
+                            android:text="SERVER"
+                            android:textStyle="bold"
+                            android:textColor="@color/bottom_text_color" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/tab_btn_block" android:layout_marginTop="8dp">
+                        <Button
+                            android:id="@+id/btn_setting_target_type_server_accumulate"
+                            style="@style/tab_btn_off"
+                            android:layout_width="200dp"
+                            android:layout_marginRight="16dp"
+                            android:stateListAnimator="@null"
+                            android:text="Accumulate"
+                            android:textColor="@color/bottom_text_color" />
+                        <Button
+                            android:id="@+id/btn_setting_target_type_server_hourly"
+                            style="@style/tab_btn_off"
+                            android:layout_width="200dp"
+                            android:layout_marginRight="16dp"
+                            android:stateListAnimator="@null"
+                            android:text="Hourly" />
+                        <Button
+                            android:id="@+id/btn_setting_target_type_server_shifttotal"
+                            style="@style/tab_btn_off"
+                            android:layout_width="200dp"
+                            android:stateListAnimator="@null"
+                            android:text="Shift Total" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/setting_line"
+                        android:layout_marginTop="24dp">
+                        <TextView
+                            android:id="@+id/tv_setting_target_type_manual"
+                            style="@style/setting_line_title"
+                            android:layout_width="200dp"
+                            android:text="Manual"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout style="@style/tab_btn_block" android:layout_marginTop="8dp">
+                        <Button
+                            android:id="@+id/btn_setting_target_type_manual_accumulate"
+                            style="@style/tab_btn_off"
+                            android:layout_width="200dp"
+                            android:layout_marginRight="16dp"
+                            android:stateListAnimator="@null"
+                            android:text="Accumulate" />
+                        <Button
+                            android:id="@+id/btn_setting_target_type_manual_hourly"
+                            style="@style/tab_btn_off"
+                            android:layout_width="200dp"
+                            android:layout_marginRight="16dp"
+                            android:stateListAnimator="@null"
+                            android:text="Hourly" />
+                        <Button
+                            android:id="@+id/btn_setting_target_type_manual_shifttotal"
+                            style="@style/tab_btn_off"
+                            android:layout_width="200dp"
+                            android:stateListAnimator="@null"
+                            android:text="Shift Total" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/setting_line"
+                        android:layout_marginTop="24dp">
+                        <TextView
+                            style="@style/setting_line_title"
+                            android:layout_width="200dp"
+                            android:text="Target per Hour"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="320dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="60dp"
+                            android:orientation="horizontal">
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:text="1 Shift" />
+                                <EditText
+                                    android:id="@+id/tv_shift_1"
+                                    style="@style/setting_line_data"
+                                    android:singleLine="true"
+                                    android:text=""
+                                    android:background="#87c947" />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="320dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="60dp"
+                            android:orientation="horizontal">
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:text="2 Shift" />
+                                <EditText
+                                    android:id="@+id/tv_shift_2"
+                                    style="@style/setting_line_data"
+                                    android:singleLine="true"
+                                    android:text=""
+                                    android:background="#87c947" />
+                            </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="320dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:text="3 Shift" />
+                                <EditText
+                                    android:id="@+id/tv_shift_3"
+                                    style="@style/setting_line_data"
+                                    android:singleLine="true"
+                                    android:text=""
+                                    android:background="#87c947" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_setting_count"
+                android:layout_width="1080dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/section_title_text"
+                    android:text="@string/title_count_info" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="60dp"
+                        android:orientation="horizontal">
+                        <LinearLayout style="@style/setting_line">
+                            <TextView
+                                style="@style/setting_line_title"
+                                android:text="1 Layer" />
+                            <TextView
+                                android:id="@+id/tv_layer_1"
+                                style="@style/setting_line_data"
+                                android:text="-"
+                                android:background="#8d4dab" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="60dp"
+                        android:orientation="horizontal">
+                        <LinearLayout style="@style/setting_line">
+                            <TextView
+                                style="@style/setting_line_title"
+                                android:text="2 Layer" />
+                            <TextView
+                                android:id="@+id/tv_layer_2"
+                                style="@style/setting_line_data"
+                                android:text="-"
+                                android:background="#8d4dab" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <LinearLayout style="@style/setting_line">
+                            <TextView
+                                style="@style/setting_line_title"
+                                android:text="4 Layer" />
+                            <TextView
+                                android:id="@+id/tv_layer_4"
+                                style="@style/setting_line_data"
+                                android:text="-"
+                                android:background="#8d4dab" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="60dp"
+                        android:orientation="vertical">
+                        <LinearLayout style="@style/setting_line">
+                            <TextView
+                                style="@style/setting_line_title"
+                                android:text="6 Layer" />
+                            <TextView
+                                android:id="@+id/tv_layer_6"
+                                style="@style/setting_line_data"
+                                android:text="-"
+                                android:background="#8d4dab" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="60dp"
+                        android:orientation="horizontal">
+                        <LinearLayout style="@style/setting_line">
+                            <TextView
+                                style="@style/setting_line_title"
+                                android:text="8 Layer" />
+                            <TextView
+                                android:id="@+id/tv_layer_8"
+                                style="@style/setting_line_data"
+                                android:text="-"
+                                android:background="#8d4dab" />
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <LinearLayout style="@style/setting_line">
+                            <TextView
+                                style="@style/setting_line_title"
+                                android:text="10 Layer" />
+                            <TextView
+                                android:id="@+id/tv_layer_10"
+                                style="@style/setting_line_data"
+                                android:text="-"
+                                android:background="#8d4dab" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_setting_system"
+                android:layout_width="1080dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:visibility="visible">
 
                 <!-- COUNTER DEVICE INFO -->
                 <LinearLayout
@@ -63,8 +347,7 @@
                         style="@style/section_title_text"
                         android:text="@string/title_counter_device_info" />
 
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="WiFi" />
@@ -76,8 +359,7 @@
                     </LinearLayout>
 
                     <!-- IP -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="IP" />
@@ -89,8 +371,7 @@
                     </LinearLayout>
 
                     <!-- MAC -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="MAC" />
@@ -102,8 +383,7 @@
                     </LinearLayout>
 
                     <!-- Factory -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_factory" />
@@ -115,8 +395,7 @@
                     </LinearLayout>
 
                     <!-- Room -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_room" />
@@ -128,8 +407,7 @@
                     </LinearLayout>
 
                     <!-- Line -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_line" />
@@ -140,9 +418,20 @@
                             android:background="#8d4dab" />
                     </LinearLayout>
 
+                    <!-- MC Model -->
+                    <LinearLayout style="@style/setting_line">
+                        <TextView
+                            style="@style/setting_line_title"
+                            android:text="@string/label_mc_model" />
+                        <TextView
+                            android:id="@+id/tv_setting_mc_model"
+                            style="@style/setting_line_data"
+                            android:text="-"
+                            android:background="#8d4dab" />
+                    </LinearLayout>
+
                     <!-- MC No -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_mc_no" />
@@ -154,22 +443,8 @@
                             android:background="#87c947" />
                     </LinearLayout>
 
-                    <!-- MC Model -->
-                    <LinearLayout
-                        style="@style/setting_line">
-                        <TextView
-                            style="@style/setting_line_title"
-                            android:text="@string/label_mc_model" />
-                        <TextView
-                            android:id="@+id/tv_setting_mc_model"
-                            style="@style/setting_line_data"
-                            android:text="-"
-                            android:background="#8d4dab" />
-                    </LinearLayout>
-
                     <!-- MC Serial -->
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_mc_serial" />
@@ -192,8 +467,7 @@
                         style="@style/section_title_text"
                         android:text="@string/title_server_info" />
 
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_server_ip" />
@@ -205,8 +479,7 @@
                             android:background="#87c947" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        style="@style/setting_line">
+                    <LinearLayout style="@style/setting_line">
                         <TextView
                             style="@style/setting_line_title"
                             android:text="@string/label_server_port" />
@@ -261,7 +534,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -290,7 +563,7 @@
                 android:gravity="center"
                 android:background="@drawable/shape_orange_rectangle_button"
                 android:stateListAnimator="@null"
-                android:text="@string/confirm"
+                android:text="@string/save"
                 android:textSize="24sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>

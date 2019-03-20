@@ -37,6 +37,10 @@
     <string name="list_item_completed">Completed</string>
     <string name="list_item_list">List</string>
     <string name="list_item_toteal">TOTAL</string>
+    <string name="list_item_wos">WOS</string>
+    <string name="list_item_model">Model</string>
+    <string name="list_item_size">Size</string>
+    <string name="list_item_balance">Balance</string>
 
     <!-- 메인화면 -->
     <string name="msg_no_operator">Operator not found</string>
@@ -80,6 +84,8 @@
     <!-- 설정화면 -->
     <string name="msg_already_registered_mc_no">Cannot input registered machine number</string>
     <string name="title_counter_device_info">COUNTER DEVICE INFO</string>
+    <string name="title_count_info">COUNT INFO</string>
+    <string name="title_count_target_type">TARGET TYPE</string>
     <string name="label_factory">Factory</string>
     <string name="label_room">Room</string>
     <string name="label_line">Line</string>
@@ -91,6 +97,7 @@
     <string name="label_server_port">Port</string>
 
     <!-- 작업인포화면  -->
+    <string name="title_select_component">SELECT COMPONENT</string>
     <string name="title_available_info">AVAILABLE INFO</string>
     <string name="title_operator_info">OPERATOR INFO</string>
     <string name="list_header_planned_time1">Planned Time1</string>
