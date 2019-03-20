@@ -9,6 +9,7 @@
     <color name="textColorSecondary">#333</color>
     <color name="white">#fff</color>
     <color name="black">#000</color>
+    <color name="gray">#888888</color>
     <color name="bgPrimary">#fff</color>
     <color name="transparent">#00ff0000</color>
     <color name="divider">#B6B6B6</color>

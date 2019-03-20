@@ -17,6 +17,22 @@
             android:layout_height="wrap_content"/>
 
         <LinearLayout
+            style="@style/tab_btn_block">
+            <Button
+                android:id="@+id/btn_work_info_server"
+                style="@style/tab_btn_on"
+                android:layout_width="150dp"
+                android:stateListAnimator="@null"
+                android:text="Server" />
+            <Button
+                android:id="@+id/btn_work_info_manual"
+                style="@style/tab_btn_off"
+                android:layout_width="150dp"
+                android:stateListAnimator="@null"
+                android:text="Manual" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -28,39 +44,17 @@
             <LinearLayout
                 android:layout_width="1080dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btn_work_info_server"
-                    style="@style/tab_btn"
-                    android:layout_width="150dp"
-                    android:background="#ba8e00"
-                    android:stateListAnimator="@null"
-                    android:text="Server" />
-                <Button
-                    android:id="@+id/btn_work_info_manual"
-                    style="@style/tab_btn"
-                    android:layout_width="150dp"
-                    android:stateListAnimator="@null"
-                    android:text="Manual" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="1080dp"
-                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <!-- AVAILABLE INFO -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:orientation="vertical">
                     <!--<TextView-->
-                        <!--style="@style/section_title_text"-->
-                        <!--android:text="@string/title_available_info" />-->
+                    <!--style="@style/section_title_text"-->
+                    <!--android:text="@string/title_available_info" />-->
                     <LinearLayout
                         style="@style/grid_header"
                         android:layout_width="match_parent">
@@ -133,7 +127,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="140dp"
+                            android:layout_height="146dp"
                             android:layout_marginBottom="8dp"
                             android:orientation="horizontal"
                             android:background="#000">

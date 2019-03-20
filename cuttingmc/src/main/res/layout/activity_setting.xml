@@ -17,6 +17,28 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            style="@style/tab_btn_block">
+            <Button
+                android:id="@+id/btn_setting_system"
+                style="@style/tab_btn_on"
+                android:layout_width="220dp"
+                android:stateListAnimator="@null"
+                android:text="SYSTEM SETTING" />
+            <Button
+                android:id="@+id/btn_setting_count"
+                style="@style/tab_btn_off"
+                android:layout_width="220dp"
+                android:stateListAnimator="@null"
+                android:text="COUNT SETTING" />
+            <Button
+                android:id="@+id/btn_setting_target"
+                style="@style/tab_btn_off"
+                android:layout_width="220dp"
+                android:stateListAnimator="@null"
+                android:text="TARGET SETTING" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -24,33 +46,6 @@
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="1080dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="16dp"
-                android:orientation="horizontal">
-                <Button
-                    android:id="@+id/btn_setting_system"
-                    style="@style/tab_btn"
-                    android:layout_width="230dp"
-                    android:background="#ba8e00"
-                    android:stateListAnimator="@null"
-                    android:text="SYSTEM SETTING" />
-                <Button
-                    android:id="@+id/btn_setting_count"
-                    style="@style/tab_btn"
-                    android:layout_width="230dp"
-                    android:stateListAnimator="@null"
-                    android:text="COUNT SETTING" />
-                <Button
-                    android:id="@+id/btn_setting_target"
-                    style="@style/tab_btn"
-                    android:layout_width="230dp"
-                    android:stateListAnimator="@null"
-                    android:text="TARGET SETTING" />
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="1080dp"
@@ -229,7 +224,7 @@
                         android:layout_marginTop="10dp">
                         <Button
                             android:id="@+id/btn_setting_check_server"
-                            style="@style/tab_btn"
+                            style="@style/tab_btn_orange"
                             android:layout_width="160dp"
                             android:background="#ba8e00"
                             android:stateListAnimator="@null"
@@ -238,7 +233,7 @@
 
                     <TextView
                         style="@style/section_title_text"
-                        android:layout_marginTop="32dp"
+                        android:layout_marginTop="40dp"
                         android:text="ETC" />
 
                     <LinearLayout
@@ -275,10 +270,9 @@
             android:paddingBottom="20dp"
             android:gravity="end"
             android:orientation="horizontal">
-
             <Button
                 android:id="@+id/btn_setting_cancel"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:gravity="center"
@@ -288,10 +282,9 @@
                 android:textSize="24sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
-
             <Button
                 android:id="@+id/btn_setting_confirm"
-                android:layout_width="180dp"
+                android:layout_width="160dp"
                 android:layout_height="50dp"
                 android:layout_margin="8dp"
                 android:gravity="center"
@@ -301,7 +294,6 @@
                 android:textSize="24sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>
-
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
