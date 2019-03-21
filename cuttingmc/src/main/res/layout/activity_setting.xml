@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#1c2c39">
+        android:background="@color/colorBackground">
 
         <include layout="@layout/layout_top_menu_2"
             android:layout_width="match_parent"

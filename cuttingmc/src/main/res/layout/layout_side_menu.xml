@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:background="#192533">
+        android:background="@color/colorBackgroundSide">
 
         <ImageButton
             android:id="@+id/btn_home"
