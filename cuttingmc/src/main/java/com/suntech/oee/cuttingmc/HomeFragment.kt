@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.suntech.oee.cuttingmc.base.BaseFragment
+import com.suntech.oee.cuttingmc.common.AppGlobal
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.layout_side_menu.*
+import kotlinx.android.synthetic.main.layout_bottom_info.*
 
 class HomeFragment : BaseFragment() {
 
@@ -23,7 +25,6 @@ class HomeFragment : BaseFragment() {
         btn_work_info.setOnClickListener { clickWorkInfo() }
 //        btn_design_info.setOnClickListener { clickDesignInfo() }
         btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
-
         updateView()
     }
 
@@ -37,35 +38,40 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun updateView() {
-//        val machine_no = AppGlobal.instance.get_mc_no1() //+ "-" + AppGlobal.instance.get_mc_no2()
-//        tv_factory.text = AppGlobal.instance.get_factory()
-//        tv_room.text = AppGlobal.instance.get_room()
-//        tv_line.text = AppGlobal.instance.get_line()
-//        tv_mc_no.text = machine_no
-//        tv_mc_model.text = AppGlobal.instance.get_mc_model()
-//        tv_employee_no.text = AppGlobal.instance.get_worker_no()
-//        tv_employee_name.text = AppGlobal.instance.get_worker_name()
-//        tv_shift.text = AppGlobal.instance.get_current_shift_name()
+        val machine_no = AppGlobal.instance.get_mc_no1() //+ "-" + AppGlobal.instance.get_mc_no2()
+        tv_factory.text = AppGlobal.instance.get_factory()
+        tv_room.text = AppGlobal.instance.get_room()
+        tv_line.text = AppGlobal.instance.get_line()
+        tv_mc_no.text = machine_no
+        tv_mc_model.text = AppGlobal.instance.get_mc_model()
+        tv_employee_no.text = AppGlobal.instance.get_worker_no()
+        tv_employee_name.text = AppGlobal.instance.get_worker_name()
+        tv_shift.text = AppGlobal.instance.get_current_shift_name()
     }
 
     private fun clickCountView() {
-//        val no = AppGlobal.instance.get_worker_no()
-//        val name = AppGlobal.instance.get_worker_name()
-//        if (no=="" || name=="") {
-//            Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
-//            return
-//        }
+        val no = AppGlobal.instance.get_worker_no()
+        val name = AppGlobal.instance.get_worker_name()
+        if (no=="" || name=="") {
+            Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
+            return
+        }
         (activity as MainActivity).changeFragment(1)
     }
     private fun clickWorkInfo() {
-//        val f = AppGlobal.instance.get_factory()
-//        val r = AppGlobal.instance.get_room()
-//        val l = AppGlobal.instance.get_line()
-//        if (f==""||r==""||l=="") {
-//            Toast.makeText(activity, getString(R.string.msg_no_setting), Toast.LENGTH_SHORT).show()
-//            return
-//        }
+        val f = AppGlobal.instance.get_factory()
+        val r = AppGlobal.instance.get_room()
+        val l = AppGlobal.instance.get_line()
+        if (f==""||r==""||l=="") {
+            Toast.makeText(activity, getString(R.string.msg_no_setting), Toast.LENGTH_SHORT).show()
+            return
+        }
         val intent = Intent(activity, WorkInfoActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun clickComponentInfo() {
+        val intent = Intent(activity, ComponentInfoActivity::class.java)
         startActivity(intent)
     }
 
@@ -92,10 +98,5 @@ class HomeFragment : BaseFragment() {
 //                (activity as MainActivity).startNewProduct(idx, pieces_info, cycle_time, model, article, material_way, component)
 //            }
 //        })
-    }
-
-    private fun clickComponentInfo() {
-        val intent = Intent(activity, ComponentActivity::class.java)
-        startActivity(intent)
     }
 }

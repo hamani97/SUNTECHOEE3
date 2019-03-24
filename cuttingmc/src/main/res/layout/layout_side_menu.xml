@@ -40,21 +40,21 @@
             android:background="@drawable/btn_top_icon_actual_count_edit" />
 
         <ImageButton
-            android:id="@+id/btn_downtime_for_demo"
+            android:id="@+id/btn_downtime"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_downtime" />
 
         <ImageButton
-            android:id="@+id/btn_defective_info_for_demo"
+            android:id="@+id/btn_defective_info"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginBottom="50dp"
             android:background="@drawable/btn_top_icon_defective_info" />
 
         <ImageButton
-            android:id="@+id/btn_setting"
+            android:id="@+id/btn_component"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginBottom="50dp"

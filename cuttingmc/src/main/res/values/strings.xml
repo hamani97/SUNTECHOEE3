@@ -85,7 +85,12 @@
     <string name="msg_already_registered_mc_no">Cannot input registered machine number</string>
     <string name="title_counter_device_info">COUNTER DEVICE INFO</string>
     <string name="title_count_info">COUNT INFO</string>
+    <string name="title_etc">ETC</string>
     <string name="title_count_target_type">TARGET TYPE</string>
+
+    <string name="label_wifi">WiFi</string>
+    <string name="label_ip">IP</string>
+    <string name="label_mac">MAC</string>
     <string name="label_factory">Factory</string>
     <string name="label_room">Room</string>
     <string name="label_line">Line</string>
@@ -149,4 +154,20 @@
 
     <string name="title_last_worker">LAST_WORKER</string>
     <string name="msg_exit_automatically">작업일이 지나서 자동으로 종료합니다</string>
+    <string name="msg_require_end_work">Please, End Work first</string>
+    <string name="setting_long_touch">Long Touch Enable</string>
+    <string name="setting_etc">ETC</string>
+    <string name="setting_target_type">TARGET TYPE</string>
+    <string name="setting_target_type_current">Current</string>
+    <string name="target_type_server_per_hourly">SERVER - per hourly</string>
+    <string name="target_type_server_per_accumulate">SERVER - per accumulate</string>
+    <string name="target_type_server_per_day_total">SERVER - per day total</string>
+    <string name="target_type_device_per_hourly">DEVICE - per hourly</string>
+    <string name="target_type_device_per_accumulate">DEVICE - per accumulate</string>
+    <string name="target_type_device_per_day_total">DEVICE - per day total</string>
+    <string name="list_item_no">NO</string>
+    <string name="list_item_name">Name</string>
+    <string name="list_item_usage_time">Usage Time</string>
+    <string name="list_item_remain_time">Remain Time</string>
+    <string name="list_item_remain_rate">Remain Rate</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.suntech.oee.cuttingmc
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -8,17 +9,19 @@ import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
+import java.util.ArrayList
+import java.util.HashMap
 
 class SettingActivity : BaseActivity() {
 
     private var tab_pos : Int = 1
     private var target_pos : Int = 1
 
-    private var _selected_factory_idx:String = ""
-    private var _selected_room_idx:String = ""
-    private var _selected_line_idx:String = ""
-    private var _selected_mc_no_idx:String = ""
-    private var _selected_mc_model_idx:String = ""
+    private var _selected_factory_idx : String = ""
+    private var _selected_room_idx : String = ""
+    private var _selected_line_idx : String = ""
+    private var _selected_mc_no_idx : String = ""
+    private var _selected_mc_model_idx : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,7 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun initView() {
-        tv_title.setText("SETTING")
+        tv_title.setText(R.string.label_setting)
 
         // set widget value
         tv_setting_wifi.text = AppGlobal.instance.getWiFiSSID(this)
@@ -65,46 +68,65 @@ class SettingActivity : BaseActivity() {
         btn_setting_target_type_manual_hourly.setOnClickListener { targetTypeChange(5) }
         btn_setting_target_type_manual_shifttotal.setOnClickListener { targetTypeChange(6) }
 
-        // Command button click
-        btn_setting_confirm.setOnClickListener { saveSettingData() }
-        btn_setting_cancel.setOnClickListener { finish() }
-        btn_setting_check_server.setOnClickListener { checkServer() }
-    }
-
-    private fun checkServer() {
-        var full_url = et_setting_server_ip.text.toString()
-        if (full_url == "") {
-            Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
-            return
+        tv_setting_factory.setOnClickListener { fetchDataForFactory() }
+        tv_setting_room.setOnClickListener { fetchDataForRoom() }
+        tv_setting_line.setOnClickListener { fetchDataForLine() }
+        tv_setting_mc_model.setOnClickListener { fetchDataForMCModel() }
+        btn_setting_check_server.setOnClickListener {
+            checkServer(true)
+            var new_ip = et_setting_server_ip.text.toString()
+            var old_ip = AppGlobal.instance.get_server_ip()
+            if (!new_ip.equals(old_ip)) {
+                tv_setting_factory.text = ""
+                tv_setting_room.text = ""
+                tv_setting_line.text = ""
+                tv_setting_mc_model.text = ""
+            }
         }
 
-        AppGlobal.instance.set_server_ip(full_url)
-        AppGlobal.instance.set_server_port(et_setting_port.text.toString())
+        // Command button click
+        btn_setting_confirm.setOnClickListener {
+            if (tv_setting_factory.text.toString() == "" || tv_setting_room.text.toString() == "" ||
+                    tv_setting_line.text.toString() == "" || tv_setting_mac.text.toString() == "") {
+                Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            saveSettingData()
+        }
+        btn_setting_cancel.setOnClickListener { finish() }
 
+        if (AppGlobal.instance.isOnline(this)) btn_wifi_state.isSelected = true
+        else btn_wifi_state.isSelected = false
+
+        if (AppGlobal.instance._server_state) btn_server_state.isSelected = true
+        else btn_server_state.isSelected = false
+
+        // TODO: TEST
+        if (et_setting_server_ip.text.toString() == "") et_setting_server_ip.setText("10.10.10.90")
+        if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
+    }
+
+    private fun checkServer(show_toast:Boolean = false) {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/ping.php"
         var params = listOf("" to "")
 
-        request(this, "/ping.php", false, false, false, params, { result ->
+        request(this, url, port, uri, false, false,false, params, { result ->
             var code = result.getString("code")
-            var msg = result.getString("msg")
-            if(code == "00"){
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            if (show_toast) Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            if (code == "00") {
+                btn_server_state.isSelected = true
+            } else {
+                btn_server_state.isSelected = false
             }
+        }, {
+            btn_server_state.isSelected = false
+            if (show_toast) Toast.makeText(this, getString(R.string.msg_connection_fail), Toast.LENGTH_SHORT).show()
         })
     }
 
     private fun saveSettingData() {
-
-        val machine_no = tv_setting_mc_no1.text.toString()
-
-        if (tv_setting_factory.text.toString() == "" ||
-                tv_setting_room.text.toString() == "" ||
-                tv_setting_line.text.toString() == "" ||
-                tv_setting_mac.text.toString() == "" || machine_no == "") {
-            Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
-            return
-        }
         AppGlobal.instance.set_factory_idx(_selected_factory_idx)
         AppGlobal.instance.set_room_idx(_selected_room_idx)
         AppGlobal.instance.set_line_idx(_selected_line_idx)
@@ -117,10 +139,12 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_mc_model(tv_setting_mc_model.text.toString())
         AppGlobal.instance.set_mc_no1(tv_setting_mc_no1.text.toString())
         AppGlobal.instance.set_mc_serial(et_setting_mc_serial.text.toString())
+
         AppGlobal.instance.set_server_ip(et_setting_server_ip.text.toString())
         AppGlobal.instance.set_server_port(et_setting_port.text.toString())
         AppGlobal.instance.set_long_touch(sw_long_touch.isChecked)
 
+        val uri = "/setting1.php"
         var params = listOf(
                 "code" to "server",
                 "factory_parent_idx" to _selected_factory_idx,
@@ -128,19 +152,175 @@ class SettingActivity : BaseActivity() {
                 "line_idx" to _selected_line_idx,
                 "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
                 "mac_addr" to tv_setting_mac.text,
-                "machine_no" to machine_no,
+                "machine_no" to tv_setting_mc_no1.text.toString(),
                 "ip_addr" to tv_setting_ip.text,
                 "mc_model" to tv_setting_mc_model.text,
                 "mc_serial" to et_setting_mc_serial.text.toString()
         )
+        request(this, uri, false, params, { result ->
+            var code = result.getString("code")
+            Toast.makeText(this, result.getString("msg"), Toast.LENGTH_SHORT).show()
+            if(code == "00") {
+                finish()
+            }
+        })
+    }
 
-        request(this, "/setting1.php", false, params, { result ->
+    private fun fetchDataForFactory() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf("code" to "factory_parent")
+
+        request(this, url, port, uri, false, false,false, params, { result ->
             var code = result.getString("code")
             var msg = result.getString("msg")
-            if(code == "00"){
+            if (code == "00"){
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists : ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map = hashMapOf(
+                            "idx" to item.getString("idx"),
+                            "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_factory_idx = lists[c]["idx"] ?: ""
+                        tv_setting_factory.text = lists[c]["name"] ?: ""
+                        tv_setting_room.text = ""
+                        tv_setting_line.text = ""
+                    }
+                })
+            } else {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
-                finish()
-            }else{
+            }
+        })
+    }
+
+    private fun fetchDataForRoom() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf(
+                "code" to "factory",
+                "factory_parent_idx" to _selected_factory_idx)
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists :ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map=hashMapOf(
+                            "idx" to item.getString("idx"),
+                            "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_room_idx = lists[c]["idx"] ?: ""
+                        tv_setting_room.text = lists[c]["name"] ?: ""
+                        tv_setting_line.text = ""
+                    }
+                })
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchDataForLine() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf(
+                "code" to "line",
+                "factory_parent_idx" to _selected_factory_idx,
+                "factory_idx" to _selected_room_idx)
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists :ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map=hashMapOf(
+                            "idx" to item.getString("idx"),
+                            "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_line_idx = lists[c]["idx"] ?: ""
+                        tv_setting_line.text = lists[c]["name"] ?: ""
+                    }
+                })
+            } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun fetchDataForMCModel() {
+        val url = "http://"+ et_setting_server_ip.text.toString()
+        val port = et_setting_port.text.toString()
+        val uri = "/getlist1.php"
+        var params = listOf("code" to "machine_model")
+
+        request(this, url, port, uri, false, false,false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var arr: ArrayList<String> = arrayListOf<String>()
+                var list = result.getJSONArray("item")
+                var lists :ArrayList<HashMap<String, String>> = arrayListOf()
+
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map=hashMapOf(
+                            "idx" to item.getString("idx"),
+                            "name" to item.getString("name")
+                    )
+                    lists.add(map)
+                    arr.add(item.getString("name"))
+                }
+
+                val intent = Intent(this, PopupSelectList::class.java)
+                intent.putStringArrayListExtra("list", arr)
+                startActivity(intent, { r, c, m, d ->
+                    if (r) {
+                        _selected_mc_model_idx = lists[c]["idx"] ?: ""
+                        tv_setting_mc_model.text = lists[c]["name"] ?: ""
+                    }
+                })
+            } else {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         })

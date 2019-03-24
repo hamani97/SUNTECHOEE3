@@ -5,11 +5,11 @@ import com.suntech.oee.cuttingmc.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
 
-class ComponentActivity : BaseActivity() {
+class ComponentInfoActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_component)
+        setContentView(R.layout.activity_component_info)
         initView()
     }
 

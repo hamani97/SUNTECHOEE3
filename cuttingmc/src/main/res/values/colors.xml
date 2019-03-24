@@ -9,6 +9,11 @@
     <color name="colorBackgroundTop">#192533</color>
     <color name="colorBackgroundSide">#192533</color>
 
+    <color name="colorReadonly">#4d4d4d</color>
+    <color name="colorSelector">#8d4dab</color>
+    <color name="colorEdittor">#87c947</color>
+
+
     <color name="textColorPrimary">#000</color>
     <color name="textColorSecondary">#333</color>
     <color name="white">#fff</color>

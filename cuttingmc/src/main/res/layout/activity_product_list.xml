@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="@string/list_header_component"
+                android:text="@string/title_product_list"
                 android:textColor="#fff"
                 android:textSize="28dp"
                 android:textStyle="bold"/>
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <include layout="@layout/list_item_component_title"
+                <include layout="@layout/list_item_product_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -72,7 +72,7 @@
                 android:background="#999"/>
 
             <ListView
-                android:id="@+id/lv_components"
+                android:id="@+id/lv_products"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -84,7 +84,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#999"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/list_item_product_total"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -103,7 +116,7 @@
                 android:gravity="center"
                 android:background="@drawable/shape_orange_rectangle_button"
                 android:stateListAnimator="@null"
-                android:text="Confirm"
+                android:text="@string/confirm"
                 android:textSize="24sp"
                 android:textColor="#fff"
                 android:textStyle="bold"/>

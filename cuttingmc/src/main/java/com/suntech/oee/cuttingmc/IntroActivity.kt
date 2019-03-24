@@ -30,7 +30,7 @@ class IntroActivity : BaseActivity() {
 //            } else {
 //                sendAppStartTime()
 //            }
-        }, 1500)
+        }, 1000)
     }
 
 //    private fun sendAppStartTime() {
