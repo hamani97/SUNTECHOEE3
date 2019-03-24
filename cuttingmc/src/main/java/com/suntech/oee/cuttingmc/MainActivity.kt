@@ -23,11 +23,14 @@ import com.suntech.oee.cuttingmc.db.SimpleDatabaseHelper
 import com.suntech.oee.cuttingmc.popup.*
 import com.suntech.oee.cuttingmc.service.UsbService
 import com.suntech.oee.cuttingmc.util.OEEUtil
+import com.suntech.oee.cuttingmc.db.DBHelperForCount
+import com.suntech.oee.cuttingmc.db.DBHelperForDownTime
 import com.suntech.oee.cuttingmc.util.UtilLocalStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_side_menu.*
 import kotlinx.android.synthetic.main.layout_top_menu.*
 import org.joda.time.DateTime
+import org.joda.time.Days
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -37,7 +40,12 @@ import kotlin.math.ceil
 
 class MainActivity : BaseActivity() {
 
+    var _stitch_db = DBHelperForCount(this)
+
     private var _doubleBackToExitPressedOnce = false
+    private var _last_count_received_time = DateTime()
+
+    var _is_call = false
 
     private val _broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -178,6 +186,100 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    private fun sendStartDownTime(dt:DateTime) {
+        if (AppGlobal.instance.get_server_ip()=="") return
+
+        val work_idx = ""+AppGlobal.instance.get_product_idx()
+        if (work_idx=="") return
+
+        if (_is_call) return
+        _is_call = true
+/*
+        var db = SimpleDatabaseHelper(this)
+        val row = db.get(work_idx)
+        val seq = row!!["seq"].toString().toInt() + 1
+*/
+        var down_db = DBHelperForDownTime(this)
+        val count = down_db.counts_for_notcompleted()
+        if (count>0) return
+
+        val list = down_db.gets()
+
+        val uri = "/downtimedata.php"
+        var params = listOf("code" to "start",
+                "mac_addr" to AppGlobal.instance.getMACAddress(),
+                "didx" to AppGlobal.instance.get_design_info_idx(),
+                "sdate" to dt.toString("yyyy-MM-dd"),
+                "stime" to dt.toString("HH:mm:ss"),
+                "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+                "factory_idx" to AppGlobal.instance.get_room_idx(),
+                "line_idx" to AppGlobal.instance.get_line_idx(),
+                "shift_idx" to  AppGlobal.instance.get_current_shift_idx(),
+                "seq" to (list?.size ?: 0) + 1)
+
+        request(this, uri, true,false, params, { result ->
+
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code == "00"){
+                var idx = result.getString("idx")
+                AppGlobal.instance.set_downtime_idx(idx)
+
+                val didx = AppGlobal.instance.get_design_info_idx()
+                val work_info =AppGlobal.instance.get_current_shift_time()
+                val shift_idx = work_info?.getString("shift_idx") ?: ""
+                val shift_name = work_info?.getString("shift_name") ?: ""
+
+                down_db.add(idx, work_idx, didx, shift_idx, shift_name, dt.toString("yyyy-MM-dd HH:mm:ss"))
+
+            }else{
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+            _is_call = false
+        },{
+            _is_call = false
+        })
+    }
+
+    private fun sendEndDownTimeForce() {
+        if (AppGlobal.instance.get_server_ip()=="") return
+
+        if (AppGlobal.instance.get_downtime_idx()=="") return
+
+        val downtime = "99"
+        val uri = "/downtimedata.php"
+        var params = listOf("code" to "end",
+                "idx" to AppGlobal.instance.get_downtime_idx(),
+                "downtime" to downtime,
+                "edate" to DateTime().toString("yyyy-MM-dd"),
+                "etime" to DateTime().toString("HH:mm:ss"))
+
+        request(this, uri, true,false, params, { result ->
+
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code == "00") {
+
+                val idx = AppGlobal.instance.get_downtime_idx()
+                AppGlobal.instance.set_downtime_idx("")
+                var db = DBHelperForDownTime(this)
+                db.updateEnd(idx, "ignored")
+
+                // 기존 다운타임 화면이 열려있으면 닫고
+                val br_intent = Intent("start.downtime")
+                this.sendBroadcast(br_intent)
+
+                // 카운트뷰로 이동
+                if (vp_fragments.currentItem != 1) changeFragment(1)
+
+            }else if(code == "99") {
+                //?
+            }else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun sendTarget(target:String) {
         if (AppGlobal.instance.get_server_ip()=="") return
 
@@ -204,6 +306,40 @@ class MainActivity : BaseActivity() {
             var msg = result.getString("msg")
             if (code == "00") {
             } else {
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun sendCountData(count:String) {
+        if (AppGlobal.instance.get_server_ip()=="") return
+
+        val work_idx = ""+AppGlobal.instance.get_product_idx()
+        if (work_idx=="") return
+
+        var db = SimpleDatabaseHelper(this)
+        val row = db.get(work_idx)
+        val actual = row!!["actual"].toString().toInt()
+        val seq = row!!["seq"].toString().toInt()
+
+        val uri = "/senddata1.php"
+        var params = listOf("mac_addr" to AppGlobal.instance.getMACAddress(),
+                "didx" to AppGlobal.instance.get_design_info_idx(),
+                "count" to count,
+                "total_count" to actual,
+                "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+                "factory_idx" to AppGlobal.instance.get_room_idx(),
+                "line_idx" to AppGlobal.instance.get_line_idx(),
+                "shift_idx" to  AppGlobal.instance.get_current_shift_idx(),
+                "seq" to seq)
+
+        request(this, uri, true,false, params, { result ->
+
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code == "00"){
+
+            }else{
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         })
@@ -317,6 +453,33 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    private fun fetchOEEGraph() {
+/*
+        val uri = "/getoee.php"
+        var params = listOf("mac_addr" to AppGlobal.instance.getMACAddress(),
+                "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
+                "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
+                "factory_idx" to AppGlobal.instance.get_room_idx(),
+                "line_idx" to AppGlobal.instance.get_line_idx())
+
+        request(this, uri, false, params, { result ->
+
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if(code == "00"){
+                var availability = result.getString("availability")
+                var performance = result.getString("performance")
+                var quality = result.getString("quality")
+
+                AppGlobal.instance.set_availability(availability)
+                AppGlobal.instance.set_performance(performance)
+                AppGlobal.instance.set_quality(quality)
+            }else{
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+            }
+        })*/
+    }
+
     private fun fetchComponentData() {
         val uri = "/getlist1.php"
         var params = listOf(
@@ -356,60 +519,6 @@ class MainActivity : BaseActivity() {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-    private fun startComponentActivity() {
-        val br_intent = Intent("start.component")
-        this.sendBroadcast(br_intent)
-        startActivity(Intent(this, ComponentActivity::class.java))
-    }
-    private fun startDowntimeActivity() {
-        val br_intent = Intent("start.downtime")
-        this.sendBroadcast(br_intent)
-        val intent = Intent(this, DownTimeActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun updateCurrentWorkTarget() {
-        val idx = AppGlobal.instance.get_design_info_idx()
-        if (idx=="") return
-
-        val work_idx = ""+AppGlobal.instance.get_product_idx()
-        if (work_idx=="") return
-
-        var db = SimpleDatabaseHelper(this)
-        val row = db.get(work_idx)
-        if (row==null) return
-
-        val actual = row["actual"].toString().toInt()
-
-        val elapsedTime = AppGlobal.instance.get_current_product_accumulated_time()
-        val elapsedTime_no_constraint = AppGlobal.instance.get_current_product_accumulated_time(true)
-        val cycle_time = AppGlobal.instance.get_cycle_time()
-        var target = (ceil(elapsedTime.toFloat() / cycle_time.toFloat())).toInt()
-        var target_no_contraint = (ceil(elapsedTime_no_constraint.toFloat() / cycle_time.toFloat())).toInt()
-
-        //Log.e("test", "elapsedTime = " + elapsedTime)
-        //Log.e("test", "cycle_time = " + cycle_time)
-        //Log.e("test", "target = " + target)
-        db.updateWorkTarget(work_idx, target, target_no_contraint)
-
-        if (Constants.DEMO_VERSION) {
-            val current_shift_time = AppGlobal.instance.get_current_shift_time()
-            var work_stime = OEEUtil.parseDateTime(current_shift_time?.getString("work_stime"))
-            var work_etime = OEEUtil.parseDateTime(current_shift_time?.getString("work_etime"))
-
-            var start_dt = OEEUtil.parseDateTime(row["start_dt"].toString())
-            var end_dt = work_etime
-            val list = db.gets()
-
-            if (list==null||list.size<=1) start_dt = work_stime
-            val t = AppGlobal.instance.compute_work_time(start_dt, end_dt, false, false)
-
-            target = ( t / cycle_time )
-        }
-        // actual 이 0이면 서버로 보내지 않음
-        if (actual>0) sendTarget(target.toString())
     }
 
     private fun handleWorkData(list:JSONArray) :JSONArray {
@@ -472,14 +581,17 @@ class MainActivity : BaseActivity() {
             }
         }
     }
-    private fun setFilters() {
-        val filter = IntentFilter()
-        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED)
-        filter.addAction(UsbService.ACTION_NO_USB)
-        filter.addAction(UsbService.ACTION_USB_DISCONNECTED)
-        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED)
-        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)
-        registerReceiver(mUsbReceiver, filter)
+    private var usbService: UsbService? = null
+    private var mHandler: MyHandler? = null
+
+    private val usbConnection = object : ServiceConnection {
+        override fun onServiceConnected(arg0: ComponentName, arg1: IBinder) {
+            usbService = (arg1 as UsbService.UsbBinder).service
+            usbService!!.setHandler(mHandler)
+        }
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            usbService = null
+        }
     }
     private fun startService(service: Class<*>, serviceConnection: ServiceConnection, extras: Bundle?) {
         if (!UsbService.SERVICE_CONNECTED) {
@@ -496,18 +608,14 @@ class MainActivity : BaseActivity() {
         val bindingIntent = Intent(this, service)
         bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
-
-    private var usbService: UsbService? = null
-    private var mHandler: MyHandler? = null
-
-    private val usbConnection = object : ServiceConnection {
-        override fun onServiceConnected(arg0: ComponentName, arg1: IBinder) {
-            usbService = (arg1 as UsbService.UsbBinder).service
-            usbService!!.setHandler(mHandler)
-        }
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            usbService = null
-        }
+    private fun setFilters() {
+        val filter = IntentFilter()
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_GRANTED)
+        filter.addAction(UsbService.ACTION_NO_USB)
+        filter.addAction(UsbService.ACTION_USB_DISCONNECTED)
+        filter.addAction(UsbService.ACTION_USB_NOT_SUPPORTED)
+        filter.addAction(UsbService.ACTION_USB_PERMISSION_NOT_GRANTED)
+        registerReceiver(mUsbReceiver, filter)
     }
 
     private class MyHandler(activity: MainActivity) : Handler() {
@@ -525,40 +633,6 @@ class MainActivity : BaseActivity() {
                 UsbService.DSR_CHANGE -> Toast.makeText(mActivity.get(), "DSR_CHANGE", Toast.LENGTH_LONG).show()
             }
         }
-    }
-
-
-    /////// 쓰레드
-    private val _downtime_timer = Timer()
-    private val _timer_task1 = Timer()          // 서버와 접속되는지 체크 ping test.
-    private val _timer_task2 = Timer()          // 각종 Data 가져오기 (workdata, designdata, downtimetype, color)
-//    private val _timer_task3 = Timer()
-
-    private fun start_timer () {
-        val task1 = object : TimerTask() {
-            override fun run() {
-                runOnUiThread {
-                    sendPing()
-                    updateCurrentWorkTarget()
-                }
-            }
-        }
-        _timer_task1.schedule(task1, 2000, 10000)
-
-        val task2 = object : TimerTask() {
-            override fun run() {
-                runOnUiThread {
-                    fetchRequiredData()
-                }
-            }
-        }
-        _timer_task2.schedule(task2, 600000, 600000)
-    }
-    private fun cancel_timer () {
-//        _downtime_timer.cancel()
-        _timer_task1.cancel()
-        _timer_task2.cancel()
-//        _timer_task3.cancel()
     }
 
     private var recvBuffer = ""
@@ -585,6 +659,7 @@ class MainActivity : BaseActivity() {
             Log.e("test", "usb parsing error! = " + recvBuffer)
         }
     }
+
     private fun isJSONValid(test: String): Boolean {
         try {
             JSONObject(test)
@@ -598,71 +673,331 @@ class MainActivity : BaseActivity() {
         return true
     }
     private fun saveRowData(cmd:String, value: JsonElement) {
-//        var db = SimpleDatabaseHelper(this)
-//
-//        if (cmd=="barcode") {
-//            val arr = value.asJsonArray
-//            val didx = arr[0].asString
-//            var number = -1
-//            if (arr.size()>1) {
-//                val value2 = value.asJsonArray[1].asString
-//                number = value2.replace("[^0-9]", "").toInt()
-//            }
-//
-//            var list = AppGlobal.instance.get_design_info()
-//            for (i in 0..(list.length() - 1)) {
-//
-//                val item = list.getJSONObject(i)
-//                val idx = item.getString("idx")
-//                if (idx==didx) {
-//                    val cycle_time = item.getString("ct").toInt()
-//                    val model = item.getString("model").toString()
-//                    val article = item.getString("article").toString()
-//                    val material_way = item.getString("material_way").toString()
-//                    val component = item.getString("component").toString()
-//
-//                    startNewProduct(didx, number, cycle_time, model, article, material_way, component)
-//                    return
-//                }
-//            }
-//
-//            Toast.makeText(this, getString(R.string.msg_no_design), Toast.LENGTH_SHORT).show()
-//
-//        } else if (cmd=="count") {
-//            val idx = AppGlobal.instance.get_design_info_idx()
-//            if (idx=="") return
-//
-//            val work_idx = ""+AppGlobal.instance.get_product_idx()
-//            if (work_idx=="") return
-//
-//            // 다운타임이 있으면 완료로 처리
-//            val downtime_idx = AppGlobal.instance.get_downtime_idx()
-//            Log.e("test", "downtime_idx = " + downtime_idx )
-//            if (downtime_idx!="") sendEndDownTimeForce()
-//
-//            val row = db.get(work_idx)
-//            val pieces_info = AppGlobal.instance.get_pieces_info()
-//
-//            val accumulated_count = AppGlobal.instance.get_accumulated_count() + 1
-//            if (pieces_info>accumulated_count) {
-//                AppGlobal.instance.set_accumulated_count(accumulated_count)
-//                return
-//            }
-//            AppGlobal.instance.set_accumulated_count(0)
-//
-//            val actual = (row!!["actual"].toString().toInt() + 1)
-//            val defective = row!!["defective"].toString().toInt()
-//            db.update(work_idx, pieces_info, actual, defective)
-//
-//            AppGlobal.instance.playSound(this)
-//
-//            _last_count_received_time = DateTime()
-//
-//            sendCountData(value.toString())
-//
-//            _stitch_db.add(work_idx, value.toString())
-//        }
+        var db = SimpleDatabaseHelper(this)
+
+        if (cmd=="barcode") {
+            val arr = value.asJsonArray
+            val didx = arr[0].asString
+            var number = -1
+            if (arr.size()>1) {
+                val value2 = value.asJsonArray[1].asString
+                number = value2.replace("[^0-9]", "").toInt()
+            }
+
+            var list = AppGlobal.instance.get_design_info()
+            for (i in 0..(list.length() - 1)) {
+
+                val item = list.getJSONObject(i)
+                val idx = item.getString("idx")
+                if (idx==didx) {
+                    val cycle_time = item.getString("ct").toInt()
+                    val model = item.getString("model").toString()
+                    val article = item.getString("article").toString()
+                    val material_way = item.getString("material_way").toString()
+                    val component = item.getString("component").toString()
+
+                    startNewProduct(didx, number, cycle_time, model, article, material_way, component)
+                    return
+                }
+            }
+
+            Toast.makeText(this, getString(R.string.msg_no_design), Toast.LENGTH_SHORT).show()
+
+        } else if (cmd=="count") {
+            val idx = AppGlobal.instance.get_design_info_idx()
+            if (idx=="") return
+
+            val work_idx = ""+AppGlobal.instance.get_product_idx()
+            if (work_idx=="") return
+
+            // 다운타임이 있으면 완료로 처리
+            val downtime_idx = AppGlobal.instance.get_downtime_idx()
+            Log.e("test", "downtime_idx = " + downtime_idx )
+            if (downtime_idx!="") sendEndDownTimeForce()
+
+            val row = db.get(work_idx)
+            val pieces_info = AppGlobal.instance.get_pieces_info()
+
+            val accumulated_count = AppGlobal.instance.get_accumulated_count() + 1
+            if (pieces_info>accumulated_count) {
+                AppGlobal.instance.set_accumulated_count(accumulated_count)
+                return
+            }
+            AppGlobal.instance.set_accumulated_count(0)
+
+            val actual = (row!!["actual"].toString().toInt() + 1)
+            val defective = row!!["defective"].toString().toInt()
+            db.update(work_idx, pieces_info, actual, defective)
+
+            AppGlobal.instance.playSound(this)
+
+            _last_count_received_time = DateTime()
+
+            sendCountData(value.toString())
+
+            _stitch_db.add(work_idx, value.toString())
+        }
     }
+
+    fun startNewProduct(didx:String, piece_info:Int, cycle_time:Int, model:String, article:String, material_way:String, component:String) {
+        var db = SimpleDatabaseHelper(this)
+
+        // 전의 작업과 동일한 디자인 번호이면 새작업이 아님
+        val prev_didx = AppGlobal.instance.get_design_info_idx()
+        if (didx==prev_didx) { return }
+
+        // 전에 완료되지 않은 작업이 있다면 완료처리
+        var prev_work_idx = ""+AppGlobal.instance.get_product_idx()
+        if (prev_work_idx!="") db.updateWorkEnd(prev_work_idx)
+
+        AppGlobal.instance.set_design_info_idx(didx)
+        AppGlobal.instance.set_model(model)
+        AppGlobal.instance.set_article(article)
+        AppGlobal.instance.set_material_way(material_way)
+        AppGlobal.instance.set_component(component)
+        AppGlobal.instance.set_cycle_time(cycle_time)
+
+        if (piece_info>0) AppGlobal.instance.set_pieces_info(piece_info)
+        AppGlobal.instance.set_product_idx()
+
+        //val seq = db.counts_for_didx(didx) + 1
+
+        val s = db.gets()
+        val seq = (s?.size ?: 0) + 1
+        Log.e("test", "seq = "+ seq)
+
+        val work_idx = ""+AppGlobal.instance.get_product_idx()
+        val work_info =AppGlobal.instance.get_current_shift_time()
+        val shift_idx = work_info?.getString("shift_idx") ?: ""
+        val shift_name = work_info?.getString("shift_name") ?: ""
+        db.add(work_idx, didx, shift_idx, shift_name, cycle_time, piece_info, 0, 0, 0, seq)
+
+        val br_intent = Intent("need.refresh")
+        this.sendBroadcast(br_intent)
+
+        // 작업시작할때 현재 쉬프트의 날짜를 기록해놓음
+        val current = AppGlobal.instance.get_current_work_time()
+        val shift = current.getJSONObject(0)
+        var shift_stime = OEEUtil.parseDateTime(shift["work_stime"].toString())
+        AppGlobal.instance.set_current_work_day(shift_stime.toString("yyyy-MM-dd"))
+
+        // 현재 shift의 첫생산인데 지각인경우 downtime 처리
+        val list = db.gets()
+        if (list?.size == 1) {
+            val item = AppGlobal.instance.get_current_shift_time()
+            if (item==null) return
+
+            var work_stime = OEEUtil.parseDateTime(item["work_stime"].toString())
+            val now = DateTime()
+            if (now.millis - work_stime.millis > Constants.DOWNTIME_FIRST) {
+
+                sendStartDownTime(work_stime)
+                startDowntimeActivity()
+            }
+        }
+    }
+
+    private fun updateCurrentWorkTarget() {
+        val idx = AppGlobal.instance.get_design_info_idx()
+        if (idx=="") return
+
+        val work_idx = ""+AppGlobal.instance.get_product_idx()
+        if (work_idx=="") return
+
+        var db = SimpleDatabaseHelper(this)
+        val row = db.get(work_idx)
+        if (row==null) return
+
+        val actual = row["actual"].toString().toInt()
+
+        val elapsedTime = AppGlobal.instance.get_current_product_accumulated_time()
+        val elapsedTime_no_constraint = AppGlobal.instance.get_current_product_accumulated_time(true)
+        val cycle_time = AppGlobal.instance.get_cycle_time()
+        var target = (ceil(elapsedTime.toFloat() / cycle_time.toFloat())).toInt()
+        var target_no_contraint = (ceil(elapsedTime_no_constraint.toFloat() / cycle_time.toFloat())).toInt()
+
+        //Log.e("test", "elapsedTime = " + elapsedTime)
+        //Log.e("test", "cycle_time = " + cycle_time)
+        //Log.e("test", "target = " + target)
+        db.updateWorkTarget(work_idx, target, target_no_contraint)
+
+        if (Constants.DEMO_VERSION) {
+            val current_shift_time = AppGlobal.instance.get_current_shift_time()
+            var work_stime = OEEUtil.parseDateTime(current_shift_time?.getString("work_stime"))
+            var work_etime = OEEUtil.parseDateTime(current_shift_time?.getString("work_etime"))
+
+            var start_dt = OEEUtil.parseDateTime(row["start_dt"].toString())
+            var end_dt = work_etime
+            val list = db.gets()
+
+            if (list==null||list.size<=1) start_dt = work_stime
+            val t = AppGlobal.instance.compute_work_time(start_dt, end_dt, false, false)
+
+            target = ( t / cycle_time )
+        }
+        // actual 이 0이면 서버로 보내지 않음
+        if (actual>0) sendTarget(target.toString())
+    }
+
+    fun endWork() {
+        AppGlobal.instance.reset_product_idx()
+        AppGlobal.instance.set_worker_no("")
+        AppGlobal.instance.set_worker_name("")
+        AppGlobal.instance.set_design_info_idx("")
+        AppGlobal.instance.set_model("")
+        AppGlobal.instance.set_article("")
+        AppGlobal.instance.set_material_way("")
+        AppGlobal.instance.set_component("")
+
+        // 다운타임이 있으면 완료로 처리
+        val downtime_idx = AppGlobal.instance.get_downtime_idx()
+        if (downtime_idx!="") sendEndDownTimeForce()
+
+        var db = SimpleDatabaseHelper(this)
+        db.delete()
+
+        var db2 = DBHelperForDownTime(this)
+        db2.delete()
+
+        var db3 = DBHelperForCount(this)
+        db3.delete()
+        Toast.makeText(this, getString(R.string.msg_exit_automatically), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkExit() {
+        val work_idx = ""+AppGlobal.instance.get_product_idx()
+        if (work_idx=="") return
+
+        val last_work_dt = OEEUtil.parseDate(AppGlobal.instance.get_current_work_day())
+
+        val current = AppGlobal.instance.get_current_work_time()
+        if (current.length()==0) return
+
+        val shift = current.getJSONObject(0)
+        var shift_stime = OEEUtil.parseDateTime(shift["work_stime"].toString())
+        var d = Days.daysBetween(last_work_dt.toLocalDate(), shift_stime.toLocalDate()).getDays()
+
+        if (d != 0) {
+            endWork()
+        }
+    }
+
+    private fun checkDownTime() {
+        var db = DBHelperForDownTime(this)
+        val count = db.counts_for_notcompleted()
+        if (count>0) {
+            _last_count_received_time = DateTime()
+            return
+        }
+
+        val idx = AppGlobal.instance.get_design_info_idx()
+        if (idx=="") return
+
+        val work_idx = ""+AppGlobal.instance.get_product_idx()
+        if (work_idx=="") return
+
+        val now = DateTime()
+        val downtime_time = AppGlobal.instance.get_downtime_sec()
+
+        if (downtime_time =="") {
+            Toast.makeText(this, getString(R.string.msg_no_downtime), Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val item = AppGlobal.instance.get_current_shift_time()
+        if (item==null) return
+
+        var work_stime = OEEUtil.parseDateTime(item["work_stime"].toString())
+        var work_etime = OEEUtil.parseDateTime(item["work_etime"].toString())
+        var planned1_stime_dt = OEEUtil.parseDateTime(item["planned1_stime_dt"].toString())
+        var planned1_etime_dt = OEEUtil.parseDateTime(item["planned1_etime_dt"].toString())
+        var planned2_stime_dt = OEEUtil.parseDateTime(item["planned2_stime_dt"].toString())
+        var planned2_etime_dt = OEEUtil.parseDateTime(item["planned2_etime_dt"].toString())
+
+        val downtime_time_sec = downtime_time.toInt()
+
+        if (work_stime.millis < now.millis && work_etime.millis > now.millis &&
+                !(planned1_stime_dt.millis < now.millis && planned1_etime_dt.millis > now.millis )&&
+                !(planned2_stime_dt.millis < now.millis && planned2_etime_dt.millis > now.millis )&&
+                downtime_time_sec > 0 && now.millis - _last_count_received_time.millis > downtime_time_sec*1000) {
+
+            sendStartDownTime(_last_count_received_time)
+            startDowntimeActivity()
+        }
+
+        if (work_stime.millis > now.millis || work_etime.millis < now.millis ||
+                (planned1_stime_dt.millis < now.millis && planned1_etime_dt.millis > now.millis ) ||
+                (planned2_stime_dt.millis < now.millis && planned2_etime_dt.millis > now.millis )) {
+            _last_count_received_time = DateTime()
+        }
+    }
+
+    private fun startComponentActivity() {
+        val br_intent = Intent("start.component")
+        this.sendBroadcast(br_intent)
+        startActivity(Intent(this, ComponentActivity::class.java))
+    }
+    private fun startDowntimeActivity() {
+        val br_intent = Intent("start.downtime")
+        this.sendBroadcast(br_intent)
+        val intent = Intent(this, DownTimeActivity::class.java)
+        startActivity(intent)
+    }
+
+
+    /////// 쓰레드
+    private val _downtime_timer = Timer()
+    private val _timer_task1 = Timer()          // 서버와 접속되는지 체크 ping test.
+    private val _timer_task2 = Timer()          // 각종 Data 가져오기 (workdata, designdata, downtimetype, color)
+    private val _timer_task3 = Timer()
+
+    private fun start_timer() {
+
+        val downtime_task = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    checkDownTime()
+                    checkExit()
+                }
+            }
+        }
+        _downtime_timer.schedule(downtime_task, 500, 1000)
+
+        val task1 = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    sendPing()
+                    updateCurrentWorkTarget()
+                }
+            }
+        }
+        _timer_task1.schedule(task1, 2000, 10000)
+
+        val task2 = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    fetchRequiredData()
+                }
+            }
+        }
+        _timer_task2.schedule(task2, 600000, 600000)
+
+        val task3 = object : TimerTask() {
+            override fun run() {
+                runOnUiThread {
+                    fetchOEEGraph()
+                }
+            }
+        }
+        _timer_task3.schedule(task3, 3000, 30000)
+    }
+    private fun cancel_timer () {
+        _downtime_timer.cancel()
+        _timer_task1.cancel()
+        _timer_task2.cancel()
+        _timer_task3.cancel()
+    }
+
 
     private class TabAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
         private val mFragments = ArrayList<Fragment>()
