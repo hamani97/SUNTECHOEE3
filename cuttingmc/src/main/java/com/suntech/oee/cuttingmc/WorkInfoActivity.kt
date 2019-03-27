@@ -184,7 +184,7 @@ class WorkInfoActivity : BaseActivity() {
                 var list = result.getJSONArray("item")
                 for (i in 0..(list.length() - 1)) {
                     val item = list.getJSONObject(i)
-                    var map=hashMapOf(
+                    var map = hashMapOf(
                             "idx" to item.getString("idx"),
                             "number" to item.getString("number"),
                             "name" to item.getString("name")

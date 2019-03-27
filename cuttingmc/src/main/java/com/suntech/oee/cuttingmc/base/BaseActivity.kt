@@ -104,16 +104,15 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     // 네트워크 관련
-    fun request (context: Context, url:String, port:String, uri:String,
-                 is_post:Boolean= false, is_log:Boolean = false, progress:Boolean= false,
+    fun request (context: Context, url:String, port:String, uri:String, is_post:Boolean= false, is_log:Boolean = false, progress:Boolean= false,
                  params:List<Pair<String, Any?>>? = null, callbackFunc: ((JSONObject)-> Unit)? = null, failedCallbackFunc: (() -> Unit)? = null) {
         if (progress) showProgressDialog(context)
 
         var full_url = url
         if (port!="") full_url += ":"+port
 
-        if (is_log) Log.d("BaseActivity", "url = " + full_url+uri)
-        if (is_log && params!=null) Log.d("BaseActivity", "params = " + params.toString())
+        if (is_log) Log.d("BaseActivity", "url = " + full_url + uri)
+        if (is_log && params != null) Log.d("BaseActivity", "params = " + params.toString())
         val currentTimeMillisStart = System.currentTimeMillis()
 
         val obj = object : Handler<Json> {
@@ -141,9 +140,9 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
         if (is_post)
-            Fuel.post(full_url+uri, params).responseJson (obj)
+            Fuel.post(full_url + uri, params).responseJson (obj)
         else
-            Fuel.get(full_url+uri, params).responseJson (obj)
+            Fuel.get(full_url + uri, params).responseJson (obj)
     }
     fun request(context: Context, uri:String, is_post:Boolean, is_log:Boolean, progress:Boolean, params:List<Pair<String, Any?>>?, callbackFunc: (JSONObject)-> Unit) {
         val port = AppGlobal.instance.get_server_port()

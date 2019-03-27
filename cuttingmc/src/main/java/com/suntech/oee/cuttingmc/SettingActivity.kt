@@ -1,6 +1,10 @@
 package com.suntech.oee.cuttingmc
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.wifi.WifiManager
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -9,8 +13,7 @@ import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_setting.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 class SettingActivity : BaseActivity() {
 
@@ -23,10 +26,39 @@ class SettingActivity : BaseActivity() {
     private var _selected_mc_no_idx : String = ""
     private var _selected_mc_model_idx : String = ""
 
+    val _broadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val action = intent.getAction()
+            if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+                if (intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false))
+                    btn_wifi_state.isSelected = true
+                else
+                    btn_wifi_state.isSelected = false
+
+            } else if (action.equals("need.refresh.server.state")) {
+                val state = intent.getStringExtra("state")
+                if (state=="Y") {
+                    btn_server_state.isSelected = true
+                }
+                else btn_server_state.isSelected = false
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         initView()
+    }
+
+    public override fun onResume() {
+        super.onResume()
+        registerReceiver(_broadcastReceiver, IntentFilter(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION))
+    }
+
+    public override fun onPause() {
+        super.onPause()
+        unregisterReceiver(_broadcastReceiver)
     }
 
     private fun initView() {

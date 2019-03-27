@@ -12,7 +12,6 @@ import org.joda.time.DateTime
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.BufferedReader
-import java.io.FileNotFoundException
 import java.io.FileReader
 import java.io.IOException
 import java.net.Inet4Address
@@ -406,6 +405,7 @@ class AppGlobal private constructor() {
             e.printStackTrace()
         }
         if (mac == "") mac = getMACAddress2()
+//        var mac = getMACAddress2()
         if (mac == "") mac = "NO_MAC_ADDRESS"
         return mac
     }

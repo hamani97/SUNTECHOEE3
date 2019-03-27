@@ -19,12 +19,12 @@ import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.base.BaseFragment
 import com.suntech.oee.cuttingmc.common.AppGlobal
 import com.suntech.oee.cuttingmc.common.Constants
+import com.suntech.oee.cuttingmc.db.DBHelperForCount
+import com.suntech.oee.cuttingmc.db.DBHelperForDownTime
 import com.suntech.oee.cuttingmc.db.SimpleDatabaseHelper
 import com.suntech.oee.cuttingmc.popup.*
 import com.suntech.oee.cuttingmc.service.UsbService
 import com.suntech.oee.cuttingmc.util.OEEUtil
-import com.suntech.oee.cuttingmc.db.DBHelperForCount
-import com.suntech.oee.cuttingmc.db.DBHelperForDownTime
 import com.suntech.oee.cuttingmc.util.UtilLocalStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.layout_side_menu.*
@@ -70,7 +70,7 @@ class MainActivity : BaseActivity() {
 
         initView()
         start_timer()
-//        fetchRequiredData()
+//        fetchRequiredData()       // onResume() 에서 하기 때문에 생략. hamani.
     }
 
     override fun onDestroy() {
@@ -355,6 +355,11 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    /*
+     *  당일 작업시간 가져오기
+     *  새벽이 지난 시간은 1일을 더한다.
+     *  전일 작업이 끝나지 않았을수 있기 때문에 전일 데이터도 가져온다.
+     */
     private fun fetchWorkData() {
         var dt = DateTime()
         val uri = "/getlist1.php"
@@ -399,6 +404,10 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    /*
+     *  디자인 정보
+     *  카테고리 (category) 가 N 이 아닌 것만 가져온다. (=P)
+     */
     private fun fetchDesignData() {
         val uri = "/getlist1.php"
         var params = listOf(
@@ -418,6 +427,11 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    /*
+     *  downtime check time
+     *  select_yn = 'Y' 것만 가져온다.
+     *  etc_yn = 'Y' 이면 second 값, 'N' 이면 name 값이 리턴된다. (1800)
+     */
     private fun fetchDownTimeType() {
         val uri = "/getlist1.php"
         var params = listOf("code" to "check_time")
@@ -429,7 +443,7 @@ class MainActivity : BaseActivity() {
                 var value = result.getString("value")
                 AppGlobal.instance.set_downtime_sec(value)
                 val s = value.toInt()
-                if (s>0) {
+                if (s > 0) {
                 }
             } else {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
@@ -437,6 +451,11 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    /*
+     *  칼라코드 가져오기
+     *  color_name = 'yellow'
+     *  color_cole = 'FFBC34'
+     */
     private fun fetchColorData() {
         val uri = "/getlist1.php"
         var params = listOf("code" to "color")
@@ -454,19 +473,18 @@ class MainActivity : BaseActivity() {
     }
 
     private fun fetchOEEGraph() {
-/*
         val uri = "/getoee.php"
-        var params = listOf("mac_addr" to AppGlobal.instance.getMACAddress(),
+        var params = listOf(
+                "mac_addr" to AppGlobal.instance.getMACAddress(),
                 "shift_idx" to AppGlobal.instance.get_current_shift_idx(),
                 "factory_parent_idx" to AppGlobal.instance.get_factory_idx(),
                 "factory_idx" to AppGlobal.instance.get_room_idx(),
                 "line_idx" to AppGlobal.instance.get_line_idx())
 
         request(this, uri, false, params, { result ->
-
             var code = result.getString("code")
             var msg = result.getString("msg")
-            if(code == "00"){
+            if(code == "00") {
                 var availability = result.getString("availability")
                 var performance = result.getString("performance")
                 var quality = result.getString("quality")
@@ -474,10 +492,10 @@ class MainActivity : BaseActivity() {
                 AppGlobal.instance.set_availability(availability)
                 AppGlobal.instance.set_performance(performance)
                 AppGlobal.instance.set_quality(quality)
-            }else{
+            } else {
                 Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
             }
-        })*/
+        })
     }
 
     private fun fetchComponentData() {
@@ -521,6 +539,10 @@ class MainActivity : BaseActivity() {
         })
     }
 
+    /*
+     *  작업 시간을 검사한다.
+     *  첫 작업 시간보다 작은 시간이 보일경우 하루가 지난것이므로 1일을 더한다.
+     */
     private fun handleWorkData(list:JSONArray) :JSONArray {
         var shift_stime = DateTime()
         for (i in 0..(list.length() - 1)) {
@@ -799,14 +821,14 @@ class MainActivity : BaseActivity() {
 
     private fun updateCurrentWorkTarget() {
         val idx = AppGlobal.instance.get_design_info_idx()
-        if (idx=="") return
+        if (idx == "") return
 
-        val work_idx = ""+AppGlobal.instance.get_product_idx()
-        if (work_idx=="") return
+        val work_idx = "" + AppGlobal.instance.get_product_idx()
+        if (work_idx == "") return
 
         var db = SimpleDatabaseHelper(this)
         val row = db.get(work_idx)
-        if (row==null) return
+        if (row == null) return
 
         val actual = row["actual"].toString().toInt()
 
@@ -830,13 +852,13 @@ class MainActivity : BaseActivity() {
             var end_dt = work_etime
             val list = db.gets()
 
-            if (list==null||list.size<=1) start_dt = work_stime
+            if (list == null || list.size <= 1) start_dt = work_stime
             val t = AppGlobal.instance.compute_work_time(start_dt, end_dt, false, false)
 
             target = ( t / cycle_time )
         }
         // actual 이 0이면 서버로 보내지 않음
-        if (actual>0) sendTarget(target.toString())
+        if (actual > 0) sendTarget(target.toString())
     }
 
     fun endWork() {
@@ -947,9 +969,9 @@ class MainActivity : BaseActivity() {
 
     /////// 쓰레드
     private val _downtime_timer = Timer()
-    private val _timer_task1 = Timer()          // 서버와 접속되는지 체크 ping test.
-    private val _timer_task2 = Timer()          // 각종 Data 가져오기 (workdata, designdata, downtimetype, color)
-    private val _timer_task3 = Timer()
+    private val _timer_task1 = Timer()          // 서버 접속 체크 ping test.
+    private val _timer_task2 = Timer()          // 작업시간, 디자인, 다운타입, 칼라 Data 가져오기 (workdata, designdata, downtimetype, color)
+//    private val _timer_task3 = Timer()          // 그래프를 그리기 위한 데이터 호출
 
     private fun start_timer() {
 
@@ -982,20 +1004,20 @@ class MainActivity : BaseActivity() {
         }
         _timer_task2.schedule(task2, 600000, 600000)
 
-        val task3 = object : TimerTask() {
-            override fun run() {
-                runOnUiThread {
-                    fetchOEEGraph()
-                }
-            }
-        }
-        _timer_task3.schedule(task3, 3000, 30000)
+//        val task3 = object : TimerTask() {
+//            override fun run() {
+//                runOnUiThread {
+//                    fetchOEEGraph()
+//                }
+//            }
+//        }
+//        _timer_task3.schedule(task3, 3000, 30000)
     }
     private fun cancel_timer () {
         _downtime_timer.cancel()
         _timer_task1.cancel()
         _timer_task2.cancel()
-        _timer_task3.cancel()
+//        _timer_task3.cancel()
     }
 
 
