@@ -49,7 +49,8 @@
     <string name="msg_no_downtime">Downtime message not found</string>
     <string name="label_shift">TARGET</string>
     <string name="label_actual">ACTUAL</string>
-    <string name="button_end_work">End Work</string>
+    <string name="button_start">START</string>
+    <string name="button_end_work">END WORK</string>
     <string name="label_chart_availability">Availability</string>
     <string name="label_chart_performance">Performance</string>
     <string name="label_chart_quality">Quality</string>

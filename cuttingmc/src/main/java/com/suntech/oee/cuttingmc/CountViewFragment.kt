@@ -58,6 +58,9 @@ class CountViewFragment : BaseFragment() {
         tv_count_view_time.text = "0H"
         tv_count_view_time_ms.text = "0M 0S"
 
+        btn_start.setOnClickListener {
+//            (activity as MainActivity).saveRowData("barcode", value)
+        }
         btn_exit.setOnClickListener {
             val work_idx = ""+ AppGlobal.instance.get_product_idx()
             if (work_idx == "") {
@@ -289,7 +292,6 @@ class CountViewFragment : BaseFragment() {
 
         val work_idx = AppGlobal.instance.get_product_idx()
         if (work_idx == "") return
-
         val item = db.get(work_idx)
         if (item != null && item.toString() != "") {
             val target = item["target"].toString()
@@ -371,18 +373,18 @@ class CountViewFragment : BaseFragment() {
     }
 
     private fun drawChartView2() {
-        var availability = AppGlobal.instance.get_availability()
-        var performance = AppGlobal.instance.get_performance()
-        var quality = AppGlobal.instance.get_quality()
-
-        if (availability=="") availability = "0"
-        if (performance=="") performance = "0"
-        if (quality=="") quality = "0"
-
-        var oee = availability.toFloat()*performance.toFloat()*quality.toFloat()/10000.0f
-        var oee2 = String.format("%.1f", oee)
-        oee2 = oee2.replace(",",".")//??
-
+//        var availability = AppGlobal.instance.get_availability()
+//        var performance = AppGlobal.instance.get_performance()
+//        var quality = AppGlobal.instance.get_quality()
+//
+//        if (availability=="") availability = "0"
+//        if (performance=="") performance = "0"
+//        if (quality=="") quality = "0"
+//
+//        var oee = availability.toFloat()*performance.toFloat()*quality.toFloat()/10000.0f
+//        var oee2 = String.format("%.1f", oee)
+//        oee2 = oee2.replace(",",".")//??
+//
 //        tv_oee_1.text = oee2 + "%"
 //        tv_oee_2.text = availability + "%"
 //        tv_oee_3.text = performance + "%"
