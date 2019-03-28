@@ -110,16 +110,9 @@
 
             <Button
                 android:id="@+id/btn_confirm"
-                android:layout_width="180dp"
-                android:layout_height="50dp"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:background="@drawable/shape_orange_rectangle_button"
+                style="@style/btn_orange"
                 android:stateListAnimator="@null"
-                android:text="@string/confirm"
-                android:textSize="24sp"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
+                android:text="@string/confirm" />
 
         </LinearLayout>
     </LinearLayout>

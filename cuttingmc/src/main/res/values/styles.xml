@@ -30,6 +30,24 @@
     <style name="AppTheme.NoActionBar.Fullscreen.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.NoActionBar.Fullscreen.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    // buttons
+    <style name="btn_default">
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@drawable/shape_default_rectangle_button</item>
+    </style>
+    <style name="btn_orange" parent="btn_default">
+        <item name="android:background">@drawable/shape_orange_rectangle_button</item>
+    </style>
+    <style name="btn_green" parent="btn_default">
+        <item name="android:background">@drawable/shape_green_rectangle_button</item>
+    </style>
+
     // setting
     <style name="tab_btn_block">
         <item name="android:layout_width">1080dp</item>

@@ -180,7 +180,6 @@ class SimpleDatabaseHelper
     }
 
     fun updateWorkTarget(work_idx: String, target: Int, target_no_contraint: Int) {
-
         val db = _openHelper.writableDatabase ?: return
         val row = ContentValues()
         row.put("target", target)
@@ -190,7 +189,6 @@ class SimpleDatabaseHelper
     }
 
     fun updateWorkActual(work_idx: String, actual: Int) {
-
         val db = _openHelper.writableDatabase ?: return
         val row = ContentValues()
         row.put("actual", actual)
@@ -199,7 +197,6 @@ class SimpleDatabaseHelper
     }
 
     fun updateDefective(work_idx: String, defective: Int) {
-
         val db = _openHelper.writableDatabase ?: return
         val row = ContentValues()
         row.put("defective", defective)
@@ -208,7 +205,6 @@ class SimpleDatabaseHelper
     }
 
     fun updateWorkEnd(work_idx: String) {
-
         val db = _openHelper.writableDatabase ?: return
         val row = ContentValues()
         row.put("end_dt", DateTime().toString("yyyy-MM-dd HH:mm:ss"))

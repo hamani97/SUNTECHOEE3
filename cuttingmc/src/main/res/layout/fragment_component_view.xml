@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ComponentInfoActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CountViewFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,46 +12,106 @@
         android:orientation="vertical"
         android:background="#1c2c39">
 
-        <include layout="@layout/layout_top_menu_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="32dp"
             android:gravity="center_horizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="1080dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <!-- AVAILABLE INFO -->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="100dp"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_marginBottom="12dp"
-                        android:gravity="center"
-                        android:text="@string/title_select_component"
-                        android:textSize="24sp"
-                        android:textColor="#fff"
-                        android:background="#000"/>
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="@string/label_c_shift"
+                            android:textSize="90sp"
+                            android:textColor="#fff"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tv_count_view_target"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="100"
+                            android:textSize="90sp"
+                            android:textColor="#fff"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tv_current_time"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:layout_gravity="center"
+                            android:text="2000-01-01"
+                            android:textSize="26sp"
+                            android:textColor="#fff" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="start"
+                            android:text="@string/label_c_actual"
+                            android:textSize="90sp"
+                            android:textColor="#fff"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tv_count_view_actual"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:text="30"
+                            android:textSize="90sp"
+                            android:textColor="#fff"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/tv_count_view_ratio"
+                            android:layout_width="300dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="end"
+                            android:layout_gravity="center"
+                            android:text="30%"
+                            android:textSize="90sp"
+                            android:textColor="#fff"
+                            android:textStyle="bold"/>
+
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
+                        android:layout_marginTop="24dp"
                         android:gravity="center"
                         android:orientation="horizontal"
                         android:background="#304053">
@@ -107,11 +167,11 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="260dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="20dp"
                         android:orientation="horizontal"
                         android:background="#000">
-
                         <ListView
                             android:id="@+id/lv_available_info"
                             android:layout_width="match_parent"
@@ -119,15 +179,12 @@
                             android:divider="@color/list_item_bg_color"
                             android:dividerHeight="0dp"
                             android:background="@color/list_item_bg_color" />
-
                     </LinearLayout>
 
                 </LinearLayout>
-
             </LinearLayout>
 
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,17 +194,21 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_setting_cancel"
-                style="@style/btn_orange"
+                android:id="@+id/btn_total_count_view"
+                style="@style/btn_green"
+                android:layout_width="300dp"
                 android:stateListAnimator="@null"
-                android:text="@string/cancel" />
+                android:text="@string/button_total_count_view" />
 
             <Button
-                android:id="@+id/btn_setting_confirm"
+                android:id="@+id/btn_select_component"
                 style="@style/btn_orange"
+                android:layout_width="300dp"
                 android:stateListAnimator="@null"
-                android:text="@string/save" />
+                android:text="@string/button_select_component" />
 
         </LinearLayout>
+
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

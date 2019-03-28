@@ -139,6 +139,7 @@ class MainActivity : BaseActivity() {
         val adapter = TabAdapter(supportFragmentManager)
         adapter.addFragment(HomeFragment(), "")
         adapter.addFragment(CountViewFragment(), "")
+        adapter.addFragment(ComponentViewFragment(), "")
         vp_fragments.adapter = adapter
         adapter.notifyDataSetChanged()
         vp_fragments.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

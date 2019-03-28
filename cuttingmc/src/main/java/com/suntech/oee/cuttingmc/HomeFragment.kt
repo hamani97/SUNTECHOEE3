@@ -71,8 +71,13 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun clickComponentInfo() {
-        val intent = Intent(activity, ComponentInfoActivity::class.java)
-        startActivity(intent)
+        val no = AppGlobal.instance.get_worker_no()
+        val name = AppGlobal.instance.get_worker_name()
+        if (no=="" || name=="") {
+            Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
+            return
+        }
+        (activity as MainActivity).changeFragment(2)
     }
 
     private fun clickDesignInfo() {

@@ -93,29 +93,17 @@
 
             <Button
                 android:id="@+id/btn_cancel"
+                style="@style/btn_orange"
                 android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:background="@drawable/shape_orange_rectangle_button"
                 android:stateListAnimator="@null"
-                android:text="@string/cancel"
-                android:textSize="24sp"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
+                android:text="@string/cancel" />
 
             <Button
                 android:id="@+id/btn_confirm"
+                style="@style/btn_orange"
                 android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:background="@drawable/shape_orange_rectangle_button"
                 android:stateListAnimator="@null"
-                android:text="@string/confirm"
-                android:textSize="24sp"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
+                android:text="@string/confirm" />
 
         </LinearLayout>
     </LinearLayout>

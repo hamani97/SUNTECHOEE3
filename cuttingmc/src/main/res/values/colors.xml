@@ -13,6 +13,14 @@
     <color name="colorSelector">#8d4dab</color>
     <color name="colorEdittor">#87c947</color>
 
+    <color name="colorButtonDefault">#2f3f51</color>
+    <color name="colorButtonDefaultFocus">#333E4D</color>
+    <color name="colorButtonOrange">#ffc000</color>
+    <color name="colorButtonOrangeFocus">#ba8e00</color>
+    <color name="colorButtonGreen">#87c947</color>
+    <color name="colorButtonGreenFocus">#70A042</color>
+
+
 
     <color name="textColorPrimary">#000</color>
     <color name="textColorSecondary">#333</color>
@@ -35,6 +43,7 @@
     <color name="tab_on_bg_color">#0079BA</color>
     <color name="tab_off_bg_color">#2f3f51</color>
     <color name="tab_bg_color_orange">#f8ad13</color>
+    <color name="tab_bg_color_green">#87c947</color>
 
     <color name="list_item_bg_color">#090c0f</color>
     <color name="list_item_text_color">#fff</color>

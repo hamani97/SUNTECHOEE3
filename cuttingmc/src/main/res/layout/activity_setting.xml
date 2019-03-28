@@ -470,28 +470,14 @@
             android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_setting_cancel"
-                android:layout_width="160dp"
-                android:layout_height="50dp"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:background="@drawable/shape_orange_rectangle_button"
+                style="@style/btn_orange"
                 android:stateListAnimator="@null"
-                android:text="@string/cancel"
-                android:textSize="24sp"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
+                android:text="@string/cancel" />
             <Button
                 android:id="@+id/btn_setting_confirm"
-                android:layout_width="160dp"
-                android:layout_height="50dp"
-                android:layout_margin="8dp"
-                android:gravity="center"
-                android:background="@drawable/shape_orange_rectangle_button"
+                style="@style/btn_orange"
                 android:stateListAnimator="@null"
-                android:text="@string/save"
-                android:textSize="24sp"
-                android:textColor="#fff"
-                android:textStyle="bold"/>
+                android:text="@string/save" />
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
