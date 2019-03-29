@@ -59,9 +59,9 @@ class ComponentViewFragment: BaseFragment() {
     override fun initViews() {
         super.initViews()
 
-        tv_count_view_target.text = "0"
-        tv_count_view_actual.text = "0"
-        tv_count_view_ratio.text = "0%"
+        tv_component_view_target.text = "0"
+        tv_component_view_actual.text = "0"
+        tv_component_view_ratio.text = "0%"
 
         btn_total_count_view.setOnClickListener {
             (activity as MainActivity).changeFragment(1)
@@ -76,7 +76,7 @@ class ComponentViewFragment: BaseFragment() {
     }
 
     private fun updateView() {
-        tv_current_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
+        tv_component_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
     }
 
     var handle_cnt = 0

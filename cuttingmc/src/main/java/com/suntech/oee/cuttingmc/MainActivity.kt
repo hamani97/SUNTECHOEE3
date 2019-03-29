@@ -42,6 +42,9 @@ class MainActivity : BaseActivity() {
 
     var _stitch_db = DBHelperForCount(this)
 
+    // Count view 화면값 1=Total count, 2=Component count
+    var countViewType = 1
+
     private var _doubleBackToExitPressedOnce = false
     private var _last_count_received_time = DateTime()
 
@@ -139,7 +142,6 @@ class MainActivity : BaseActivity() {
         val adapter = TabAdapter(supportFragmentManager)
         adapter.addFragment(HomeFragment(), "")
         adapter.addFragment(CountViewFragment(), "")
-        adapter.addFragment(ComponentViewFragment(), "")
         vp_fragments.adapter = adapter
         adapter.notifyDataSetChanged()
         vp_fragments.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

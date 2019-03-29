@@ -50,25 +50,47 @@ class CountViewFragment : BaseFragment() {
     }
 
     override fun onSelected() {
+        if ((activity as MainActivity).countViewType == 1) {
+            ll_total_count.visibility = View.VISIBLE
+            ll_component_count.visibility = View.GONE
+        } else {
+            ll_total_count.visibility = View.GONE
+            ll_component_count.visibility = View.VISIBLE
+        }
+
         val no = AppGlobal.instance.get_worker_no()
         val name = AppGlobal.instance.get_worker_name()
         if (no== "" || name == "") {
             Toast.makeText(activity, getString(R.string.msg_no_operator), Toast.LENGTH_SHORT).show()
             (activity as MainActivity).changeFragment(0)
         }
+
         updateView()
-        fetchData()
-        countTarget()
+
+        if ((activity as MainActivity).countViewType != 1) {
+            fetchData()
+            countTarget()
+        } else {
+            fetchDataComponent()
+            countTargetComponent()
+        }
     }
 
     override fun initViews() {
         super.initViews()
 
+        // Total count view
         tv_count_view_target.text = "0"
         tv_count_view_actual.text = "0"
         tv_count_view_ratio.text = "0%"
         tv_count_view_time.text = "0H"
 
+        // Component count view
+        tv_component_view_target.text = "0"
+        tv_component_view_actual.text = "0"
+        tv_component_view_ratio.text = "0%"
+
+        // Total count view
         btn_start.setOnClickListener {
 //            (activity as MainActivity).saveRowData("barcode", value)
         }
@@ -94,12 +116,31 @@ class CountViewFragment : BaseFragment() {
             alertDialog.show()
 
         }
+
+        // Component count view
+        btn_total_count_view.setOnClickListener {
+            (activity as MainActivity).countViewType = 1
+            ll_total_count.visibility = View.VISIBLE
+            ll_component_count.visibility = View.GONE
+        }
+        btn_select_component.setOnClickListener {
+            val intent = Intent(activity, ComponentInfoActivity::class.java)
+            startActivity(intent)
+        }
+
         updateView()
-        fetchData()
-        countTarget()
+
+        if ((activity as MainActivity).countViewType != 1) {
+            fetchData()
+            countTarget()
+        } else {
+            fetchDataComponent()
+            countTargetComponent()
+        }
     }
 
     private fun countTarget() {
+
         val now_time = DateTime()
         val current_shift_time = AppGlobal.instance.get_current_shift_time()
         val work_stime = OEEUtil.parseDateTime(current_shift_time?.getString("work_stime"))
@@ -192,100 +233,112 @@ class CountViewFragment : BaseFragment() {
         }
     }
 
+    private fun countTargetComponent() {
+
+    }
+
     private fun updateView() {
-        tv_design_idx.text = AppGlobal.instance.get_design_info_idx()
-        tv_pieces.text = AppGlobal.instance.get_pieces_info().toString()
-        tv_cycle_time.text = AppGlobal.instance.get_cycle_time().toString()
 
-        tv_article.text = AppGlobal.instance.get_article()
-        tv_model.text = AppGlobal.instance.get_model()
-        tv_material.text = AppGlobal.instance.get_material_way()
-        tv_component.text = AppGlobal.instance.get_component()
-        tv_current_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
+        if ((activity as MainActivity).countViewType == 1) {
+            // Total count view
+            tv_design_idx.text = AppGlobal.instance.get_design_info_idx()
+            tv_pieces.text = AppGlobal.instance.get_pieces_info().toString()
+            tv_cycle_time.text = AppGlobal.instance.get_cycle_time().toString()
 
-        val pieces_info = AppGlobal.instance.get_pieces_info()
-//        tv_side_pieces.text = "= " + pieces_info + " Pieces"
+            tv_article.text = AppGlobal.instance.get_article()
+            tv_model.text = AppGlobal.instance.get_model()
+            tv_material.text = AppGlobal.instance.get_material_way()
+            tv_component.text = AppGlobal.instance.get_component()
 
-        val accumulated_count = AppGlobal.instance.get_accumulated_count()
+            tv_current_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
 
-        var db = SimpleDatabaseHelper(activity)
+            val pieces_info = AppGlobal.instance.get_pieces_info()
+            //        tv_side_pieces.text = "= " + pieces_info + " Pieces"
 
-        val work_idx = AppGlobal.instance.get_product_idx()
-        if (work_idx == "") return
-        val item = db.get(work_idx)
-        if (item != null && item.toString() != "") {
-            val target = item["target"].toString()
-            val actual = (item["actual"].toString().toInt()) / pieces_info
+            val accumulated_count = AppGlobal.instance.get_accumulated_count()
 
-            val elapsedTime = AppGlobal.instance.get_current_shift_accumulated_time()
+            var db = SimpleDatabaseHelper(activity)
 
-            val h = (elapsedTime / 3600)
-            val m = ((elapsedTime - (h*3600)) / 60)
-            val s = ((elapsedTime - (h*3600)) - m*60 )
+            val work_idx = AppGlobal.instance.get_product_idx()
+            if (work_idx == "") return
+            val item = db.get(work_idx)
+            if (item != null && item.toString() != "") {
+                val target = item["target"].toString()
+                val actual = (item["actual"].toString().toInt()) / pieces_info
 
-            tv_count_view_target.text = "" + target
-            tv_count_view_actual.text = "" + actual
-            tv_count_view_time.text = "" + h + "H"
-        }
+                val elapsedTime = AppGlobal.instance.get_current_shift_accumulated_time()
 
-        // 전체
-        _list_for_db = db.gets() ?: _list_for_db
+                val h = (elapsedTime / 3600)
+                val m = ((elapsedTime - (h * 3600)) / 60)
+                val s = ((elapsedTime - (h * 3600)) - m * 60)
 
-        var total_target = 0
-        var total_actual = 0
-
-        // 쉬프트타임내의 각각의 프로덕트 작업시간을 계산하여 total target을 계산함 (프로덕트마다 cycle time이 다르므로)
-        // 단, 첫 프로덕트의 경우 쉬프트 시작시간이 작업시작시간으로 계산
-        // 단, 작업시간이 쉬프트 종료시간을 넘긴 경우, 쉬프트 종료시간까지만 계산
-        for (i in 0..(_list_for_db.size - 1)) {
-            val item = _list_for_db[i]
-            val actual = item["actual"]?.toInt() ?: 0
-            val target = item["target"]?.toInt() ?: 0
-            total_actual += actual
-            total_target += target
-/*
-            val current_shift_time = AppGlobal.instance.get_current_shift_time()
-            var work_stime = OEEUtil.parseDateTime(current_shift_time?.getString("work_stime"))
-            var work_etime = OEEUtil.parseDateTime(current_shift_time?.getString("work_etime"))
-
-            var start_dt = OEEUtil.parseDateTime(item["start_dt"])
-            var end_dt = if (item["end_dt"]!=null ) OEEUtil.parseDateTime(item["end_dt"]) else work_etime
-            if (i==0) start_dt = work_stime
-            val t = AppGlobal.instance.compute_work_time(start_dt, end_dt, false, false)
-            val ct = item["cycle_time"]?.toInt() ?: 0
-            total_target += ( t / ct )
-*/
-        }
-
-        var ratio = (total_actual.toFloat() / total_target.toFloat() * 100).toInt()
-        if (ratio>999) ratio=999
-        var ratio_txt = "" + ratio + "%"
-        if (total_target==0) ratio_txt = "N/A"
-
-        tv_count_view_target.text = ""+total_target
-        tv_count_view_actual.text = ""+total_actual
-        tv_count_view_ratio.text = ratio_txt
-
-        var maxEnumber = 0
-        var color_code = "ffffff"
-        for (i in 0..(_list.size - 1)) {
-            val row = _list[i]
-            val snumber = row["snumber"]?.toInt() ?: 0
-            val enumber = row["enumber"]?.toInt() ?: 0
-            color_code = row["color_code"].toString()
-            if (maxEnumber<enumber) maxEnumber = enumber
-            if (snumber<=ratio && enumber>=ratio) {
-                tv_count_view_target.setTextColor(Color.parseColor("#"+color_code))
-                tv_count_view_actual.setTextColor(Color.parseColor("#"+color_code))
-                tv_count_view_ratio.setTextColor(Color.parseColor("#"+color_code))
-                tv_count_view_time.setTextColor(Color.parseColor("#"+color_code))
+                tv_count_view_target.text = "" + target
+                tv_count_view_actual.text = "" + actual
+                tv_count_view_time.text = "" + h + "H"
             }
-        }
-        if (maxEnumber<ratio) {
-            tv_count_view_target.setTextColor(Color.parseColor("#"+color_code))
-            tv_count_view_actual.setTextColor(Color.parseColor("#"+color_code))
-            tv_count_view_ratio.setTextColor(Color.parseColor("#"+color_code))
-            tv_count_view_time.setTextColor(Color.parseColor("#"+color_code))
+
+            // 전체
+            _list_for_db = db.gets() ?: _list_for_db
+
+            var total_target = 0
+            var total_actual = 0
+
+            // 쉬프트타임내의 각각의 프로덕트 작업시간을 계산하여 total target을 계산함 (프로덕트마다 cycle time이 다르므로)
+            // 단, 첫 프로덕트의 경우 쉬프트 시작시간이 작업시작시간으로 계산
+            // 단, 작업시간이 쉬프트 종료시간을 넘긴 경우, 쉬프트 종료시간까지만 계산
+            for (i in 0..(_list_for_db.size - 1)) {
+                val item = _list_for_db[i]
+                val actual = item["actual"]?.toInt() ?: 0
+                val target = item["target"]?.toInt() ?: 0
+                total_actual += actual
+                total_target += target
+                /*
+                val current_shift_time = AppGlobal.instance.get_current_shift_time()
+                var work_stime = OEEUtil.parseDateTime(current_shift_time?.getString("work_stime"))
+                var work_etime = OEEUtil.parseDateTime(current_shift_time?.getString("work_etime"))
+
+                var start_dt = OEEUtil.parseDateTime(item["start_dt"])
+                var end_dt = if (item["end_dt"]!=null ) OEEUtil.parseDateTime(item["end_dt"]) else work_etime
+                if (i==0) start_dt = work_stime
+                val t = AppGlobal.instance.compute_work_time(start_dt, end_dt, false, false)
+                val ct = item["cycle_time"]?.toInt() ?: 0
+                total_target += ( t / ct )
+    */
+            }
+
+            var ratio = (total_actual.toFloat() / total_target.toFloat() * 100).toInt()
+            if (ratio > 999) ratio = 999
+            var ratio_txt = "" + ratio + "%"
+            if (total_target == 0) ratio_txt = "N/A"
+
+            tv_count_view_target.text = "" + total_target
+            tv_count_view_actual.text = "" + total_actual
+            tv_count_view_ratio.text = ratio_txt
+
+            var maxEnumber = 0
+            var color_code = "ffffff"
+            for (i in 0..(_list.size - 1)) {
+                val row = _list[i]
+                val snumber = row["snumber"]?.toInt() ?: 0
+                val enumber = row["enumber"]?.toInt() ?: 0
+                color_code = row["color_code"].toString()
+                if (maxEnumber < enumber) maxEnumber = enumber
+                if (snumber <= ratio && enumber >= ratio) {
+                    tv_count_view_target.setTextColor(Color.parseColor("#" + color_code))
+                    tv_count_view_actual.setTextColor(Color.parseColor("#" + color_code))
+                    tv_count_view_ratio.setTextColor(Color.parseColor("#" + color_code))
+                    tv_count_view_time.setTextColor(Color.parseColor("#" + color_code))
+                }
+            }
+            if (maxEnumber < ratio) {
+                tv_count_view_target.setTextColor(Color.parseColor("#" + color_code))
+                tv_count_view_actual.setTextColor(Color.parseColor("#" + color_code))
+                tv_count_view_ratio.setTextColor(Color.parseColor("#" + color_code))
+                tv_count_view_time.setTextColor(Color.parseColor("#" + color_code))
+            }
+
+        } else {
+            tv_component_time.text = DateTime.now().toString("yyyy-MM-dd HH:mm:ss")
         }
     }
 
@@ -334,6 +387,7 @@ class CountViewFragment : BaseFragment() {
     }
 
     private fun fetchData() {
+
         var list = AppGlobal.instance.get_color_code()
 
         for (i in 0..(list.length() - 1)) {
@@ -348,4 +402,9 @@ class CountViewFragment : BaseFragment() {
             _list.add(map)
         }
     }
+
+    private fun fetchDataComponent() {
+
+    }
 }
+

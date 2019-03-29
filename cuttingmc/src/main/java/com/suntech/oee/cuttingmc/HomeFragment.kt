@@ -20,8 +20,8 @@ class HomeFragment : BaseFragment() {
     override fun initViews() {
         tv_app_version.text = "v "+ activity.packageManager.getPackageInfo(activity.packageName, 0).versionName
 
-        btn_count_view.setOnClickListener { clickCountView() }
-        btn_component_info.setOnClickListener { clickComponentInfo() }
+        btn_count_view.setOnClickListener { (activity as MainActivity).countViewType = 1; clickCountView() }
+        btn_component_info.setOnClickListener { (activity as MainActivity).countViewType = 2; clickCountView() }
         btn_work_info.setOnClickListener { clickWorkInfo() }
 //        btn_design_info.setOnClickListener { clickDesignInfo() }
         btn_setting_view.setOnClickListener { startActivity(Intent(activity, SettingActivity::class.java)) }
