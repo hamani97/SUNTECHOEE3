@@ -106,6 +106,16 @@
     <string name="label_server_ip">Server IP</string>
     <string name="label_server_port">Port</string>
 
+    <!-- COMPONENT 화면  -->
+    <string name="msg_cannot_input_wos">Cannot input wos</string>
+    <string name="label_wos">WOS</string>
+    <string name="label_component">COMPONENT</string>
+    <string name="label_size">SIZE</string>
+    <string name="label_layer">Layer</string>
+    <string name="label_model2">MODEL</string>
+    <string name="label_style">STYLE</string>
+    <string name="label_target">TARGET</string>
+
     <!-- 작업인포화면  -->
     <string name="title_select_component">SELECT COMPONENT</string>
     <string name="title_available_info">AVAILABLE INFO</string>

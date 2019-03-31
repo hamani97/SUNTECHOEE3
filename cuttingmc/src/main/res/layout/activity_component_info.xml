@@ -51,6 +51,121 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_width="500dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="20dp"
+                            android:orientation="vertical">
+                            <!-- WOS -->
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:layout_width="200dp"
+                                    android:text="@string/label_wos" />
+                                <TextView
+                                    android:id="@+id/tv_compo_wos"
+                                    android:gravity="center"
+                                    android:paddingLeft="0dp"
+                                    style="@style/setting_line_data_selector" />
+                            </LinearLayout>
+                            <!-- COMPONENT -->
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:layout_width="200dp"
+                                    android:text="@string/label_component" />
+                                <TextView
+                                    android:id="@+id/tv_compo_component"
+                                    android:gravity="center"
+                                    android:paddingLeft="0dp"
+                                    style="@style/setting_line_data_selector" />
+                            </LinearLayout>
+                            <!-- SIZE & Layer -->
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:layout_width="100dp"
+                                    android:text="@string/label_size" />
+                                <TextView
+                                    android:id="@+id/tv_compo_size"
+                                    style="@style/setting_line_data_selector"
+                                    android:gravity="center"
+                                    android:layout_width="92dp"
+                                    android:paddingLeft="0dp"
+                                    android:layout_marginRight="8dp" />
+                                <TextView
+                                    style="@style/setting_line_title"
+                                    android:layout_width="120dp"
+                                    android:text="@string/label_layer" />
+                                <TextView
+                                    android:id="@+id/tv_compo_layer"
+                                    style="@style/setting_line_data_selector"
+                                    android:gravity="center"
+                                    android:paddingLeft="0dp"
+                                    android:layout_width="92dp" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="560dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <!-- MODEL -->
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    android:layout_width="200dp"
+                                    style="@style/setting_line_title"
+                                    android:text="@string/label_model2" />
+                                <TextView
+                                    android:id="@+id/tv_compo_model"
+                                    style="@style/setting_line_data_readonly"
+                                    android:paddingLeft="0dp"
+                                    android:gravity="center" />
+                            </LinearLayout>
+                            <!-- STYLE -->
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    android:layout_width="200dp"
+                                    style="@style/setting_line_title"
+                                    android:text="@string/label_style" />
+                                <TextView
+                                    android:id="@+id/tv_compo_style"
+                                    style="@style/setting_line_data_readonly"
+                                    android:paddingLeft="0dp"
+                                    android:gravity="center" />
+                            </LinearLayout>
+                            <!-- TARGET & ACTUAL -->
+                            <LinearLayout style="@style/setting_line">
+                                <TextView
+                                    android:layout_width="130dp"
+                                    style="@style/setting_line_title"
+                                    android:text="@string/label_target" />
+                                <TextView
+                                    android:id="@+id/tv_compo_target"
+                                    style="@style/setting_line_data_readonly"
+                                    android:layout_width="130dp"
+                                    android:layout_marginRight="8dp"
+                                    android:paddingLeft="0dp"
+                                    android:gravity="center" />
+                                <TextView
+                                    android:layout_width="140dp"
+                                    style="@style/setting_line_title"
+                                    android:text="@string/label_actual" />
+                                <TextView
+                                    android:id="@+id/tv_compo_actual"
+                                    style="@style/setting_line_data_readonly"
+                                    android:paddingLeft="0dp"
+                                    android:gravity="center"
+                                    android:background="@color/tab_on_bg_color" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:gravity="center"
                         android:orientation="horizontal"
@@ -113,7 +228,7 @@
                         android:background="#000">
 
                         <ListView
-                            android:id="@+id/lv_available_info"
+                            android:id="@+id/lv_wos_info"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:divider="@color/list_item_bg_color"

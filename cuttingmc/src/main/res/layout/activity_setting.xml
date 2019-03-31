@@ -46,6 +46,7 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
+            <!--Target setting-->
             <LinearLayout
                 android:id="@+id/layout_setting_target"
                 android:layout_width="1080dp"
@@ -205,6 +206,7 @@
 
             </LinearLayout>
 
+            <!--Count setting-->
             <LinearLayout
                 android:id="@+id/layout_setting_count"
                 android:layout_width="1080dp"
@@ -235,7 +237,7 @@
                             <TextView
                                 android:id="@+id/tv_layer_1"
                                 style="@style/setting_line_data"
-                                android:text="-"
+                                android:text=""
                                 android:background="#8d4dab" />
                         </LinearLayout>
                     </LinearLayout>
@@ -251,7 +253,7 @@
                             <TextView
                                 android:id="@+id/tv_layer_2"
                                 style="@style/setting_line_data"
-                                android:text="-"
+                                android:text=""
                                 android:background="#8d4dab" />
                         </LinearLayout>
                     </LinearLayout>
@@ -266,7 +268,7 @@
                             <TextView
                                 android:id="@+id/tv_layer_4"
                                 style="@style/setting_line_data"
-                                android:text="-"
+                                android:text=""
                                 android:background="#8d4dab" />
                         </LinearLayout>
                     </LinearLayout>
@@ -289,7 +291,7 @@
                             <TextView
                                 android:id="@+id/tv_layer_6"
                                 style="@style/setting_line_data"
-                                android:text="-"
+                                android:text=""
                                 android:background="#8d4dab" />
                         </LinearLayout>
                     </LinearLayout>
@@ -305,7 +307,7 @@
                             <TextView
                                 android:id="@+id/tv_layer_8"
                                 style="@style/setting_line_data"
-                                android:text="-"
+                                android:text=""
                                 android:background="#8d4dab" />
                         </LinearLayout>
                     </LinearLayout>
@@ -320,7 +322,7 @@
                             <TextView
                                 android:id="@+id/tv_layer_10"
                                 style="@style/setting_line_data"
-                                android:text="-"
+                                android:text=""
                                 android:background="#8d4dab" />
                         </LinearLayout>
                     </LinearLayout>
@@ -328,6 +330,7 @@
 
             </LinearLayout>
 
+            <!--System setting-->
             <LinearLayout
                 android:id="@+id/layout_setting_system"
                 android:layout_width="1080dp"
@@ -340,7 +343,7 @@
                 <LinearLayout
                     android:layout_width="520dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="60dp"
+                    android:layout_marginRight="40dp"
                     android:orientation="vertical">
 
                     <TextView style="@style/section_title_text" android:text="@string/title_counter_device_info" />
