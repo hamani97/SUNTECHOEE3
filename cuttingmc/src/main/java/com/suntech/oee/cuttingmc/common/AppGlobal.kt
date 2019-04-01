@@ -378,6 +378,12 @@ class AppGlobal private constructor() {
     fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
     fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
 
+    fun set_target_setting(value: Int) { UtilLocalStorage.setInt(instance._context!!, "current_target_setting", value) }
+    fun get_target_setting() : Int { return UtilLocalStorage.getInt(instance._context!!, "current_target_setting") }
+
+    fun set_target_shift(shift_no: String, value: String) { UtilLocalStorage.setString(instance._context!!, "current_target_shift_" + shift_no, value) }
+    fun get_target_shift(shift_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_target_shift_" + shift_no) }
+
     // 다운 타임
     fun set_downtime_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_downtime_idx", idx) }
     fun get_downtime_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_downtime_idx") }

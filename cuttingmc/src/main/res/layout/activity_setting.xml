@@ -72,28 +72,26 @@
                             style="@style/setting_line_title"
                             android:layout_width="200dp"
                             android:text="SERVER"
-                            android:textStyle="bold"
-                            android:textColor="@color/bottom_text_color" />
+                            android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout style="@style/tab_btn_block" android:layout_marginTop="8dp">
                         <Button
-                            android:id="@+id/btn_setting_target_type_server_accumulate"
+                            android:id="@+id/btn_server_accumulate"
                             style="@style/tab_btn_off"
                             android:layout_width="200dp"
                             android:layout_marginRight="16dp"
                             android:stateListAnimator="@null"
-                            android:text="Accumulate"
-                            android:textColor="@color/bottom_text_color" />
+                            android:text="Accumulate" />
                         <Button
-                            android:id="@+id/btn_setting_target_type_server_hourly"
+                            android:id="@+id/btn_server_hourly"
                             style="@style/tab_btn_off"
                             android:layout_width="200dp"
                             android:layout_marginRight="16dp"
                             android:stateListAnimator="@null"
                             android:text="Hourly" />
                         <Button
-                            android:id="@+id/btn_setting_target_type_server_shifttotal"
+                            android:id="@+id/btn_server_shifttotal"
                             style="@style/tab_btn_off"
                             android:layout_width="200dp"
                             android:stateListAnimator="@null"
@@ -113,21 +111,21 @@
 
                     <LinearLayout style="@style/tab_btn_block" android:layout_marginTop="8dp">
                         <Button
-                            android:id="@+id/btn_setting_target_type_manual_accumulate"
+                            android:id="@+id/btn_manual_accumulate"
                             style="@style/tab_btn_off"
                             android:layout_width="200dp"
                             android:layout_marginRight="16dp"
                             android:stateListAnimator="@null"
                             android:text="Accumulate" />
                         <Button
-                            android:id="@+id/btn_setting_target_type_manual_hourly"
+                            android:id="@+id/btn_manual_hourly"
                             style="@style/tab_btn_off"
                             android:layout_width="200dp"
                             android:layout_marginRight="16dp"
                             android:stateListAnimator="@null"
                             android:text="Hourly" />
                         <Button
-                            android:id="@+id/btn_setting_target_type_manual_shifttotal"
+                            android:id="@+id/btn_manual_shifttotal"
                             style="@style/tab_btn_off"
                             android:layout_width="200dp"
                             android:stateListAnimator="@null"

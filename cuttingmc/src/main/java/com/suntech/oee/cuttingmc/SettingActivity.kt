@@ -12,14 +12,14 @@ import android.widget.Toast
 import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_setting.*
-import kotlinx.android.synthetic.main.activity_setting.view.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
 import java.util.*
 
 class SettingActivity : BaseActivity() {
 
     private var tab_pos: Int = 1
-    private var target_pos: Int = 1
+    private var _selected_target_type: Int = 0  // Server : 11 = Accumulate, 12 = hourly, 13 = shift total
+                                                // Manual : 21 = Accumulate, 22 = hourly, 23 = shift total
 
     private var _selected_factory_idx: String = ""
     private var _selected_room_idx: String = ""
@@ -71,6 +71,23 @@ class SettingActivity : BaseActivity() {
     private fun initView() {
         tv_title.setText(R.string.label_setting)
 
+        // set hidden value
+        // system setting
+        _selected_factory_idx = AppGlobal.instance.get_factory_idx()
+        _selected_room_idx = AppGlobal.instance.get_room_idx()
+        _selected_line_idx = AppGlobal.instance.get_line_idx()
+        _selected_mc_no_idx = AppGlobal.instance.get_mc_no_idx()
+        _selected_mc_model_idx = AppGlobal.instance.get_mc_model_idx()
+
+        // count setting
+        _selected_layer_pair_1 = AppGlobal.instance.get_layer_pairs("1")
+        _selected_layer_pair_2 = AppGlobal.instance.get_layer_pairs("2")
+        _selected_layer_pair_4 = AppGlobal.instance.get_layer_pairs("4")
+        _selected_layer_pair_6 = AppGlobal.instance.get_layer_pairs("6")
+        _selected_layer_pair_8 = AppGlobal.instance.get_layer_pairs("8")
+        _selected_layer_pair_10 = AppGlobal.instance.get_layer_pairs("10")
+
+
         // set widget value
         // system setting
         tv_setting_wifi.text = AppGlobal.instance.getWiFiSSID(this)
@@ -88,29 +105,7 @@ class SettingActivity : BaseActivity() {
 
         sw_long_touch.isChecked = AppGlobal.instance.get_long_touch()
 
-        // set hidden value
-        _selected_factory_idx = AppGlobal.instance.get_factory_idx()
-        _selected_room_idx = AppGlobal.instance.get_room_idx()
-        _selected_line_idx = AppGlobal.instance.get_line_idx()
-        _selected_mc_no_idx = AppGlobal.instance.get_mc_no_idx()
-        _selected_mc_model_idx = AppGlobal.instance.get_mc_model_idx()
-
-
-        // Tab button click
-        btn_setting_system.setOnClickListener { tabChange(1) }
-        btn_setting_count.setOnClickListener { tabChange(2) }
-        btn_setting_target.setOnClickListener { tabChange(3) }
-
-
         // count setting
-        // set hidden value
-        _selected_layer_pair_1 = AppGlobal.instance.get_layer_pairs("1")
-        _selected_layer_pair_2 = AppGlobal.instance.get_layer_pairs("2")
-        _selected_layer_pair_4 = AppGlobal.instance.get_layer_pairs("4")
-        _selected_layer_pair_6 = AppGlobal.instance.get_layer_pairs("6")
-        _selected_layer_pair_8 = AppGlobal.instance.get_layer_pairs("8")
-        _selected_layer_pair_10 = AppGlobal.instance.get_layer_pairs("10")
-
         if (_selected_layer_pair_1 != "") tv_layer_1.text = _selected_layer_pair_1 + " pair"
         if (_selected_layer_pair_2 != "") tv_layer_2.text = _selected_layer_pair_2 + " pair"
         if (_selected_layer_pair_4 != "") tv_layer_4.text = _selected_layer_pair_4 + " pair"
@@ -118,8 +113,26 @@ class SettingActivity : BaseActivity() {
         if (_selected_layer_pair_8 != "") tv_layer_8.text = _selected_layer_pair_8 + " pair"
         if (_selected_layer_pair_10 != "") tv_layer_10.text = _selected_layer_pair_10 + " pair"
 
+        // target setting
+        if (AppGlobal.instance.get_target_setting() == 0) targetTypeChange(11)
+        else targetTypeChange(AppGlobal.instance.get_target_setting())
 
-        // Count setting button click
+        tv_shift_1.setText(AppGlobal.instance.get_target_shift("1"))
+        tv_shift_2.setText(AppGlobal.instance.get_target_shift("2"))
+        tv_shift_3.setText(AppGlobal.instance.get_target_shift("3"))
+
+        // Tab button click
+        btn_setting_system.setOnClickListener { tabChange(1) }
+        btn_setting_count.setOnClickListener { tabChange(2) }
+        btn_setting_target.setOnClickListener { tabChange(3) }
+
+        // System setting button listener
+        tv_setting_factory.setOnClickListener { fetchDataForFactory() }
+        tv_setting_room.setOnClickListener { fetchDataForRoom() }
+        tv_setting_line.setOnClickListener { fetchDataForLine() }
+        tv_setting_mc_model.setOnClickListener { fetchDataForMCModel() }
+
+        // Count setting button listener
         tv_layer_1.setOnClickListener { fetchLayerPairs("1") }
         tv_layer_2.setOnClickListener { fetchLayerPairs("2") }
         tv_layer_4.setOnClickListener { fetchLayerPairs("4") }
@@ -127,20 +140,16 @@ class SettingActivity : BaseActivity() {
         tv_layer_8.setOnClickListener { fetchLayerPairs("8") }
         tv_layer_10.setOnClickListener { fetchLayerPairs("10") }
 
-        // Target type button click
-        btn_setting_target_type_server_accumulate.setOnClickListener { targetTypeChange(1) }
-        btn_setting_target_type_server_hourly.setOnClickListener { targetTypeChange(2) }
-        btn_setting_target_type_server_shifttotal.setOnClickListener { targetTypeChange(3) }
-        btn_setting_target_type_manual_accumulate.setOnClickListener { targetTypeChange(4) }
-        btn_setting_target_type_manual_hourly.setOnClickListener { targetTypeChange(5) }
-        btn_setting_target_type_manual_shifttotal.setOnClickListener { targetTypeChange(6) }
+        // Target setting button listener
+        btn_server_accumulate.setOnClickListener { targetTypeChange(11) }
+        btn_server_hourly.setOnClickListener { targetTypeChange(12) }
+        btn_server_shifttotal.setOnClickListener { targetTypeChange(13) }
+        btn_manual_accumulate.setOnClickListener { targetTypeChange(21) }
+        btn_manual_hourly.setOnClickListener { targetTypeChange(22) }
+        btn_manual_shifttotal.setOnClickListener { targetTypeChange(23) }
 
-        // System setting button click
-        tv_setting_factory.setOnClickListener { fetchDataForFactory() }
-        tv_setting_room.setOnClickListener { fetchDataForRoom() }
-        tv_setting_line.setOnClickListener { fetchDataForLine() }
-        tv_setting_mc_model.setOnClickListener { fetchDataForMCModel() }
 
+        // check server button
         btn_setting_check_server.setOnClickListener {
             checkServer(true)
             var new_ip = et_setting_server_ip.text.toString()
@@ -153,7 +162,7 @@ class SettingActivity : BaseActivity() {
             }
         }
 
-        // Command button click
+        // Save button click
         btn_setting_confirm.setOnClickListener {
             if (tv_setting_factory.text.toString() == "" || tv_setting_room.text.toString() == "" ||
                     tv_setting_line.text.toString() == "" || tv_setting_mac.text.toString() == "") {
@@ -162,6 +171,7 @@ class SettingActivity : BaseActivity() {
             }
             saveSettingData()
         }
+        // Cancel button click
         btn_setting_cancel.setOnClickListener { finish() }
 
         if (AppGlobal.instance.isOnline(this)) btn_wifi_state.isSelected = true
@@ -181,12 +191,12 @@ class SettingActivity : BaseActivity() {
 
         arr.add("0.5 pair")
         lists.add(hashMapOf("pair" to "0.5", "desc" to "0.5 pair"))
-
         for (i in 1..5) {
             var num = i.toString()
             arr.add(num + " pair")
             lists.add(hashMapOf("pair" to num, "desc" to num + " pair"))
         }
+
         val intent = Intent(this, PopupSelectList::class.java)
         intent.putStringArrayListExtra("list", arr)
         startActivity(intent, { r, c, m, d ->
@@ -242,6 +252,7 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun saveSettingData() {
+        // setting value
         AppGlobal.instance.set_factory_idx(_selected_factory_idx)
         AppGlobal.instance.set_room_idx(_selected_room_idx)
         AppGlobal.instance.set_line_idx(_selected_line_idx)
@@ -259,12 +270,19 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_server_port(et_setting_port.text.toString())
         AppGlobal.instance.set_long_touch(sw_long_touch.isChecked)
 
+        // count layer
         AppGlobal.instance.set_layer_pairs("1", _selected_layer_pair_1)
         AppGlobal.instance.set_layer_pairs("2", _selected_layer_pair_2)
         AppGlobal.instance.set_layer_pairs("4", _selected_layer_pair_4)
         AppGlobal.instance.set_layer_pairs("6", _selected_layer_pair_6)
         AppGlobal.instance.set_layer_pairs("8", _selected_layer_pair_8)
         AppGlobal.instance.set_layer_pairs("10", _selected_layer_pair_10)
+
+        // target type
+        AppGlobal.instance.set_target_setting(_selected_target_type)
+        AppGlobal.instance.set_target_shift("1", tv_shift_1.text.toString())
+        AppGlobal.instance.set_target_shift("2", tv_shift_2.text.toString())
+        AppGlobal.instance.set_target_shift("3", tv_shift_3.text.toString())
 
         val uri = "/setting1.php"
         var params = listOf(
@@ -489,31 +507,31 @@ class SettingActivity : BaseActivity() {
     }
 
     private fun targetTypeChange(v : Int) {
-        if (target_pos == v) return
-        when (target_pos) {
-            1 -> btn_setting_target_type_server_accumulate.setTextColor(ContextCompat.getColor(this, R.color.gray))
-            2 -> btn_setting_target_type_server_hourly.setTextColor(ContextCompat.getColor(this, R.color.gray))
-            3 -> btn_setting_target_type_server_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.gray))
-            4 -> btn_setting_target_type_manual_accumulate.setTextColor(ContextCompat.getColor(this, R.color.gray))
-            5 -> btn_setting_target_type_manual_hourly.setTextColor(ContextCompat.getColor(this, R.color.gray))
-            6 -> btn_setting_target_type_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.gray))
+        if (_selected_target_type == v) return
+        when (_selected_target_type) {
+            11 -> btn_server_accumulate.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            12 -> btn_server_hourly.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            13 -> btn_server_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            21 -> btn_manual_accumulate.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            22 -> btn_manual_hourly.setTextColor(ContextCompat.getColor(this, R.color.gray))
+            23 -> btn_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.gray))
         }
-        when (target_pos) {
-            in 1..3 -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.white))
-            in 4..6 -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.white))
+        when (_selected_target_type) {
+            in 11..13 -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.white))
+            in 21..23 -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.white))
         }
-        target_pos = v
-        when (target_pos) {
-            1 -> btn_setting_target_type_server_accumulate.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
-            2 -> btn_setting_target_type_server_hourly.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
-            3 -> btn_setting_target_type_server_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
-            4 -> btn_setting_target_type_manual_accumulate.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
-            5 -> btn_setting_target_type_manual_hourly.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
-            6 -> btn_setting_target_type_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+        _selected_target_type = v
+        when (_selected_target_type) {
+            11 -> btn_server_accumulate.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+            12 -> btn_server_hourly.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+            13 -> btn_server_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+            21 -> btn_manual_accumulate.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+            22 -> btn_manual_hourly.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+            23 -> btn_manual_shifttotal.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
         }
-        when (target_pos) {
-            in 1..3 -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
-            in 4..6 -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+        when (_selected_target_type) {
+            in 11..13 -> tv_setting_target_type_server.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
+            in 21..23 -> tv_setting_target_type_manual.setTextColor(ContextCompat.getColor(this, R.color.bottom_text_color))
         }
     }
 }
