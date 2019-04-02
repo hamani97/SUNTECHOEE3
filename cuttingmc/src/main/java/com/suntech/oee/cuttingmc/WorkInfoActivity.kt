@@ -14,10 +14,13 @@ import android.widget.TextView
 import android.widget.Toast
 import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.common.AppGlobal
+import com.suntech.oee.cuttingmc.db.DBHelperForSetting
 import com.suntech.oee.cuttingmc.util.OEEUtil
 import kotlinx.android.synthetic.main.activity_work_info.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
+import org.joda.time.DateTime
 import org.json.JSONArray
+import org.json.JSONObject
 
 class WorkInfoActivity : BaseActivity() {
 
@@ -113,9 +116,158 @@ class WorkInfoActivity : BaseActivity() {
                 AppGlobal.instance.set_worker_name(name)
                 AppGlobal.instance.push_last_worker(no, name)
             }
-            finish()
+            saveWorkTime()
         }
         btn_setting_cancel.setOnClickListener { finish() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateView()
+    }
+
+    private fun updateView() {
+        val work_list = AppGlobal.instance.get_today_work_time_manual()
+        val work1 = work_list.getJSONObject(0)
+        val work2 = work_list.getJSONObject(1)
+        val work3 = work_list.getJSONObject(2)
+        val work1_stime = OEEUtil.parseDateTime(work1["work_stime"].toString())
+        val work1_etime = OEEUtil.parseDateTime(work1["work_etime"].toString())
+        val work2_stime = OEEUtil.parseDateTime(work2["work_stime"].toString())
+        val work2_etime = OEEUtil.parseDateTime(work2["work_etime"].toString())
+        val work3_stime = OEEUtil.parseDateTime(work3["work_stime"].toString())
+        val work3_etime = OEEUtil.parseDateTime(work3["work_etime"].toString())
+        val planned1_stime_dt = OEEUtil.parseDateTime(work1["planned1_stime_dt"].toString())
+        val planned1_etime_dt = OEEUtil.parseDateTime(work1["planned1_etime_dt"].toString())
+        val planned2_stime_dt = OEEUtil.parseDateTime(work1["planned2_stime_dt"].toString())
+        val planned2_etime_dt = OEEUtil.parseDateTime(work1["planned2_etime_dt"].toString())
+        val planned3_stime_dt = OEEUtil.parseDateTime(work1["planned3_stime_dt"].toString())
+        val planned3_etime_dt = OEEUtil.parseDateTime(work1["planned3_etime_dt"].toString())
+
+        et_setting_s_1_s_h.setText(""+work1_stime.toString("HH"))
+        et_setting_s_1_s_m.setText(""+work1_stime.toString("mm"))
+        et_setting_s_1_e_h.setText(""+work1_etime.toString("HH"))
+        et_setting_s_1_e_m.setText(""+work1_etime.toString("mm"))
+        et_setting_s_2_s_h.setText(""+work2_stime.toString("HH"))
+        et_setting_s_2_s_m.setText(""+work2_stime.toString("mm"))
+        et_setting_s_2_e_h.setText(""+work2_etime.toString("HH"))
+        et_setting_s_2_e_m.setText(""+work2_etime.toString("mm"))
+        et_setting_s_3_s_h.setText(""+work3_stime.toString("HH"))
+        et_setting_s_3_s_m.setText(""+work3_stime.toString("mm"))
+        et_setting_s_3_e_h.setText(""+work3_etime.toString("HH"))
+        et_setting_s_3_e_m.setText(""+work3_etime.toString("mm"))
+
+        et_setting_p_1_s_h.setText(""+planned1_stime_dt.toString("HH"))
+        et_setting_p_1_s_m.setText(""+planned1_stime_dt.toString("mm"))
+        et_setting_p_1_e_h.setText(""+planned1_etime_dt.toString("HH"))
+        et_setting_p_1_e_m.setText(""+planned1_etime_dt.toString("mm"))
+        et_setting_p_2_s_h.setText(""+planned2_stime_dt.toString("HH"))
+        et_setting_p_2_s_m.setText(""+planned2_stime_dt.toString("mm"))
+        et_setting_p_2_e_h.setText(""+planned2_etime_dt.toString("HH"))
+        et_setting_p_2_e_m.setText(""+planned2_etime_dt.toString("mm"))
+        et_setting_p_3_s_h.setText(""+planned3_stime_dt.toString("HH"))
+        et_setting_p_3_s_m.setText(""+planned3_stime_dt.toString("mm"))
+        et_setting_p_3_e_h.setText(""+planned3_etime_dt.toString("HH"))
+        et_setting_p_3_e_m.setText(""+planned3_etime_dt.toString("mm"))
+    }
+
+    private fun saveWorkTime() {
+        val now_time = DateTime()
+        val yesterday = now_time.plusDays(-1)
+
+        var setting_s_1_s_h = if (et_setting_s_1_s_h.text.toString() =="") "00" else et_setting_s_1_s_h.text.toString()
+        var setting_s_1_s_m = if (et_setting_s_1_s_m.text.toString() =="") "00" else et_setting_s_1_s_m.text.toString()
+        var setting_s_1_e_h = if (et_setting_s_1_e_h.text.toString() =="") "00" else et_setting_s_1_e_h.text.toString()
+        var setting_s_1_e_m = if (et_setting_s_1_e_m.text.toString() =="") "00" else et_setting_s_1_e_m.text.toString()
+        var setting_s_2_s_h = if (et_setting_s_2_s_h.text.toString() =="") "00" else et_setting_s_2_s_h.text.toString()
+        var setting_s_2_s_m = if (et_setting_s_2_s_m.text.toString() =="") "00" else et_setting_s_2_s_m.text.toString()
+        var setting_s_2_e_h = if (et_setting_s_2_e_h.text.toString() =="") "00" else et_setting_s_2_e_h.text.toString()
+        var setting_s_2_e_m = if (et_setting_s_2_e_m.text.toString() =="") "00" else et_setting_s_2_e_m.text.toString()
+        var setting_s_3_s_h = if (et_setting_s_3_s_h.text.toString() =="") "00" else et_setting_s_3_s_h.text.toString()
+        var setting_s_3_s_m = if (et_setting_s_3_s_m.text.toString() =="") "00" else et_setting_s_3_s_m.text.toString()
+        var setting_s_3_e_h = if (et_setting_s_3_e_h.text.toString() =="") "00" else et_setting_s_3_e_h.text.toString()
+        var setting_s_3_e_m = if (et_setting_s_3_e_m.text.toString() =="") "00" else et_setting_s_3_e_m.text.toString()
+
+        var setting_p_1_s_h = if (et_setting_p_1_s_h.text.toString() =="") "00" else et_setting_p_1_s_h.text.toString()
+        var setting_p_1_s_m = if (et_setting_p_1_s_m.text.toString() =="") "00" else et_setting_p_1_s_m.text.toString()
+        var setting_p_1_e_h = if (et_setting_p_1_e_h.text.toString() =="") "00" else et_setting_p_1_e_h.text.toString()
+        var setting_p_1_e_m = if (et_setting_p_1_e_m.text.toString() =="") "00" else et_setting_p_1_e_m.text.toString()
+        var setting_p_2_s_h = if (et_setting_p_2_s_h.text.toString() =="") "00" else et_setting_p_2_s_h.text.toString()
+        var setting_p_2_s_m = if (et_setting_p_2_s_m.text.toString() =="") "00" else et_setting_p_2_s_m.text.toString()
+        var setting_p_2_e_h = if (et_setting_p_2_e_h.text.toString() =="") "00" else et_setting_p_2_e_h.text.toString()
+        var setting_p_2_e_m = if (et_setting_p_2_e_m.text.toString() =="") "00" else et_setting_p_2_e_m.text.toString()
+        var setting_p_3_s_h = if (et_setting_p_3_s_h.text.toString() =="") "00" else et_setting_p_3_s_h.text.toString()
+        var setting_p_3_s_m = if (et_setting_p_3_s_m.text.toString() =="") "00" else et_setting_p_3_s_m.text.toString()
+        var setting_p_3_e_h = if (et_setting_p_3_e_h.text.toString() =="") "00" else et_setting_p_3_e_h.text.toString()
+        var setting_p_3_e_m = if (et_setting_p_3_e_m.text.toString() =="") "00" else et_setting_p_3_e_m.text.toString()
+
+        var list = JSONArray()
+        var shift1 = JSONObject()
+        shift1.put("idx","1")
+        shift1.put("date",now_time.toString("yyyy-MM-dd"))
+        shift1.put("available_stime",""+setting_s_1_s_h+":"+setting_s_1_s_m)
+        shift1.put("available_etime",""+setting_s_1_e_h+":"+setting_s_1_e_m)
+        shift1.put("planned1_stime",""+setting_p_1_s_h+":"+setting_p_1_s_m)
+        shift1.put("planned1_etime",""+setting_p_1_e_h+":"+setting_p_1_e_m)
+        shift1.put("planned2_stime",""+setting_p_2_s_h+":"+setting_p_2_s_m)
+        shift1.put("planned2_etime",""+setting_p_2_e_h+":"+setting_p_2_e_m)
+        shift1.put("planned3_stime",""+setting_p_3_s_h+":"+setting_p_3_s_m)
+        shift1.put("planned3_etime",""+setting_p_3_e_h+":"+setting_p_3_e_m)
+        shift1.put("over_time","0")
+        list.put(shift1)
+
+        var shift2 = JSONObject()
+        shift2.put("idx","2")
+        shift2.put("date",now_time.toString("yyyy-MM-dd"))
+        shift2.put("available_stime",""+setting_s_2_s_h+":"+setting_s_2_s_m)
+        shift2.put("available_etime",""+setting_s_2_e_h+":"+setting_s_2_e_m)
+        shift2.put("planned1_stime",""+setting_p_1_s_h+":"+setting_p_1_s_m)
+        shift2.put("planned1_etime",""+setting_p_1_e_h+":"+setting_p_1_e_m)
+        shift2.put("planned2_stime",""+setting_p_2_s_h+":"+setting_p_2_s_m)
+        shift2.put("planned2_etime",""+setting_p_2_e_h+":"+setting_p_2_e_m)
+        shift2.put("planned3_stime",""+setting_p_3_s_h+":"+setting_p_3_s_m)
+        shift2.put("planned3_etime",""+setting_p_3_e_h+":"+setting_p_3_e_m)
+        shift2.put("over_time","0")
+        list.put(shift2)
+
+        var shift3 = JSONObject()
+        shift3.put("idx","3")
+        shift3.put("date",now_time.toString("yyyy-MM-dd"))
+        shift3.put("available_stime",""+setting_s_3_s_h+":"+setting_s_3_s_m)
+        shift3.put("available_etime",""+setting_s_3_e_h+":"+setting_s_3_e_m)
+        shift3.put("planned1_stime",""+setting_p_1_s_h+":"+setting_p_1_s_m)
+        shift3.put("planned1_etime",""+setting_p_1_e_h+":"+setting_p_1_e_m)
+        shift3.put("planned2_stime",""+setting_p_2_s_h+":"+setting_p_2_s_m)
+        shift3.put("planned2_etime",""+setting_p_2_e_h+":"+setting_p_2_e_m)
+        shift3.put("planned3_stime",""+setting_p_3_s_h+":"+setting_p_3_s_m)
+        shift3.put("planned3_etime",""+setting_p_3_e_h+":"+setting_p_3_e_m)
+        shift3.put("over_time","0")
+        list.put(shift3)
+
+        AppGlobal.instance.set_today_work_time_manual(list)
+
+        shift1.put("date",yesterday.toString("yyyy-MM-dd"))
+        shift2.put("date",yesterday.toString("yyyy-MM-dd"))
+        shift3.put("date",yesterday.toString("yyyy-MM-dd"))
+
+        AppGlobal.instance.set_prev_work_time_manual(list)
+
+        var setting_db = DBHelperForSetting(this)
+
+        val current_shift_time = AppGlobal.instance.get_current_shift_time_manual(1)
+        val date = current_shift_time?.getString("date") ?: "2000-01-01"
+        setting_db.deleteByDT(now_time.toString(date))
+
+        setting_db.add(setting_s_1_s_h, setting_s_1_s_m, setting_s_1_e_h, setting_s_1_e_m,
+                setting_s_2_s_h, setting_s_2_s_m, setting_s_2_e_h, setting_s_2_e_m,
+                setting_s_3_s_h, setting_s_3_s_m, setting_s_3_e_h, setting_s_3_e_m,
+                setting_p_1_s_h, setting_p_1_s_m, setting_p_1_e_h, setting_p_1_e_m,
+                setting_p_2_s_h, setting_p_2_s_m, setting_p_2_e_h, setting_p_2_e_m,
+                setting_p_3_s_h, setting_p_3_s_m, setting_p_3_e_h, setting_p_3_e_m,
+                date)
+
+        Log.e("test","list = " +  setting_db.gets().toString())
+        finish()
     }
 
     private fun filterOperatorData() {

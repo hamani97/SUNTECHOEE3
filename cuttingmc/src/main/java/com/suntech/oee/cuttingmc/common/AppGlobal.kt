@@ -110,6 +110,183 @@ class AppGlobal private constructor() {
         return list.getJSONObject(idx)
     }
 
+    fun set_today_work_time_manual(data: JSONArray) { UtilLocalStorage.setJSONArray(instance._context!!, "current_work_time_manual", data) }
+    fun get_today_work_time_manual() : JSONArray {
+        var list = UtilLocalStorage.getJSONArray(instance._context!!, "current_work_time_manual")
+        list = handleWorkDataManual(list)
+        return list
+    }
+    fun set_prev_work_time_manual(data: JSONArray) { UtilLocalStorage.setJSONArray(instance._context!!, "current_prev_work_time_manual", data) }
+    fun get_prev_work_time_manual() : JSONArray {
+        var list = UtilLocalStorage.getJSONArray(instance._context!!, "current_prev_work_time_manual")
+        list = handleWorkDataManual(list)
+        return list
+    }
+    private fun handleWorkDataManual(list:JSONArray) :JSONArray {
+
+        if (list.length()==0) {
+            var shift1 = JSONObject()
+            shift1.put("idx","1")
+            shift1.put("date","2019-01-01")
+            shift1.put("available_stime","07:01")
+            shift1.put("available_etime","16:00")
+            shift1.put("planned1_stime","12:00")
+            shift1.put("planned1_etime","13:00")
+            shift1.put("planned2_stime","20:00")
+            shift1.put("planned2_etime","21:00")
+            shift1.put("planned3_stime","02:00")
+            shift1.put("planned3_etime","03:00")
+            shift1.put("over_time","0")
+            shift1.put("line_idx","1")
+            shift1.put("line_name","Line1")
+            shift1.put("shift_idx","1")
+            shift1.put("shift_name","SHIFT 1")
+            list.put(shift1)
+            var shift2 = JSONObject()
+            shift2.put("idx","2")
+            shift2.put("date","2019-01-01")
+            shift2.put("available_stime","16:01")
+            shift2.put("available_etime","23:00")
+            shift2.put("planned1_stime","12:00")
+            shift2.put("planned1_etime","13:00")
+            shift2.put("planned2_stime","20:00")
+            shift2.put("planned2_etime","21:00")
+            shift2.put("planned3_stime","02:00")
+            shift2.put("planned3_etime","03:00")
+            shift2.put("over_time","0")
+            shift2.put("line_idx","1")
+            shift2.put("line_name","Line1")
+            shift2.put("shift_idx","2")
+            shift2.put("shift_name","SHIFT 2")
+            list.put(shift2)
+            var shift3 = JSONObject()
+            shift3.put("idx","3")
+            shift3.put("date","2019-01-01")
+            shift3.put("available_stime","23:01")
+            shift3.put("available_etime","07:00")
+            shift3.put("planned1_stime","12:00")
+            shift3.put("planned1_etime","13:00")
+            shift3.put("planned2_stime","20:00")
+            shift3.put("planned2_etime","21:00")
+            shift3.put("planned3_stime","02:00")
+            shift3.put("planned3_etime","03:00")
+            shift3.put("over_time","0")
+            shift3.put("line_idx","1")
+            shift3.put("line_name","Line1")
+            shift3.put("shift_idx","3")
+            shift3.put("shift_name","SHIFT 3")
+            list.put(shift3)
+        }
+
+        var shift_stime = DateTime()
+        for (i in 0..(list.length() - 1)) {
+
+            var item = list.getJSONObject(i)
+            val over_time = item["over_time"]
+            val date = item["date"].toString()
+            if (i==0) { // 첫시간 기준
+                shift_stime = OEEUtil.parseDateTime(date +" " + item["available_stime"] + ":00")
+            }
+
+            var work_stime = OEEUtil.parseDateTime(date +" " + item["available_stime"] + ":00")
+            var work_etime = OEEUtil.parseDateTime(date +" " + item["available_etime"] + ":00")
+            work_etime = work_etime.plusHours(over_time.toString().toInt())
+
+            val planned1_stime_txt = date +" " + if (item["planned1_stime"] =="") "00:00:00" else item["planned1_stime"].toString() + ":00"
+            val planned1_etime_txt = date +" " + if (item["planned1_etime"] =="") "00:00:00" else item["planned1_etime"].toString() + ":00"
+            val planned2_stime_txt = date +" " + if (item["planned2_stime"] =="") "00:00:00" else item["planned2_stime"].toString() + ":00"
+            val planned2_etime_txt = date +" " + if (item["planned2_etime"] =="") "00:00:00" else item["planned2_etime"].toString() + ":00"
+            val planned3_stime_txt = date +" " + if (item["planned3_stime"] =="") "00:00:00" else item["planned3_stime"].toString() + ":00"
+            val planned3_etime_txt = date +" " + if (item["planned3_etime"] =="") "00:00:00" else item["planned3_etime"].toString() + ":00"
+
+            var planned1_stime_dt = OEEUtil.parseDateTime(planned1_stime_txt)
+            var planned1_etime_dt = OEEUtil.parseDateTime(planned1_etime_txt)
+            var planned2_stime_dt = OEEUtil.parseDateTime(planned2_stime_txt)
+            var planned2_etime_dt = OEEUtil.parseDateTime(planned2_etime_txt)
+            var planned3_stime_dt = OEEUtil.parseDateTime(planned3_stime_txt)
+            var planned3_etime_dt = OEEUtil.parseDateTime(planned3_etime_txt)
+
+            if (shift_stime.secondOfDay > work_stime.secondOfDay) work_stime = work_stime.plusDays(1)
+            if (shift_stime.secondOfDay > work_etime.secondOfDay) work_etime = work_etime.plusDays(1)
+            if (shift_stime.secondOfDay > planned1_stime_dt.secondOfDay) planned1_stime_dt = planned1_stime_dt.plusDays(1)
+            if (shift_stime.secondOfDay > planned1_etime_dt.secondOfDay) planned1_etime_dt = planned1_etime_dt.plusDays(1)
+            if (shift_stime.secondOfDay > planned2_stime_dt.secondOfDay) planned2_stime_dt = planned2_stime_dt.plusDays(1)
+            if (shift_stime.secondOfDay > planned2_etime_dt.secondOfDay) planned2_etime_dt = planned2_etime_dt.plusDays(1)
+            if (shift_stime.secondOfDay > planned3_stime_dt.secondOfDay) planned3_stime_dt = planned3_stime_dt.plusDays(1)
+            if (shift_stime.secondOfDay > planned3_etime_dt.secondOfDay) planned3_etime_dt = planned3_etime_dt.plusDays(1)
+
+            item.put("work_stime", work_stime.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("work_etime", work_etime.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("planned1_stime_dt", planned1_stime_dt.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("planned1_etime_dt", planned1_etime_dt.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("planned2_stime_dt", planned2_stime_dt.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("planned2_etime_dt", planned2_etime_dt.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("planned3_stime_dt", planned3_stime_dt.toString("yyyy-MM-dd HH:mm:ss"))
+            item.put("planned3_etime_dt", planned3_etime_dt.toString("yyyy-MM-dd HH:mm:ss"))
+        }
+        return list
+    }
+
+    // 어제시간과 오늘시간중에 지나지 않은 날짜를 선택해서 반환
+    fun get_current_work_time_manual(spare_idx:Int = 0) : JSONArray {
+        val today = get_today_work_time_manual()
+        val yesterday = get_prev_work_time_manual()
+
+        val now = DateTime()
+
+        if (yesterday.length()>0) {
+            if (spare_idx==0) {
+                val item = yesterday.getJSONObject(yesterday.length() - 1)
+                var shift_etime = OEEUtil.parseDateTime(item["work_etime"].toString())
+                if (shift_etime.millis > now.millis) return yesterday
+            }
+            else {
+                val item = today.getJSONObject(0)
+                var work_stime = OEEUtil.parseDateTime(item["work_stime"].toString())
+                if (work_stime.millis > now.millis) return yesterday
+            }
+        }
+        return today
+    }
+
+    fun get_current_shift_time_idx_manual(spare_idx:Int = 0) : Int {
+        val list = get_current_work_time_manual(spare_idx)
+        if (list.length() == 0 ) return -1
+
+        val now = DateTime()
+        var current_shift_idx = -1
+
+        for (i in 0..(list.length() - 1)) {
+            if (spare_idx==0) {
+                val item = list.getJSONObject(i)
+                var shift_etime = OEEUtil.parseDateTime(item["work_etime"].toString())
+
+                if (now.millis <= shift_etime.millis) {
+                    current_shift_idx = i
+                    break
+                }
+            } else {
+                val item = list.getJSONObject((list.length() - 1) - i)
+                var shift_stime = OEEUtil.parseDateTime(item["work_stime"].toString())
+
+                if (now.millis > shift_stime.millis) {
+                    current_shift_idx ++
+                }
+            }
+        }
+        return current_shift_idx
+    }
+
+    // spare_idx: 작업시간 중간을 몇번 시프트에 혹은 어제/어제 중 어디에 속하게 할것인지
+    fun get_current_shift_time_manual(spare_idx:Int = 0) : JSONObject? {
+        val list = get_current_work_time_manual(spare_idx)
+        if (list.length() == 0 ) return null
+
+        val idx = get_current_shift_time_idx_manual(spare_idx)
+        if (idx<0) return null
+        return list.getJSONObject(idx)
+    }
+
     // 현재 프로덕트의 누적 시간을 구함
     fun get_current_product_accumulated_time(with_no_constraint:Boolean = true) : Int {
         val product_idx = get_product_idx()

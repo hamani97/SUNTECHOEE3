@@ -140,12 +140,15 @@
                         android:layout_height="50dp"
                         android:orientation="horizontal">
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_1_s_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -156,13 +159,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_1_s_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -173,13 +179,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_1_e_h"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -190,13 +199,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_1_e_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="450dp"
@@ -204,12 +216,15 @@
                         android:layout_marginLeft="40dp"
                         android:orientation="horizontal">
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_1_s_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -220,13 +235,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_1_s_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -237,13 +255,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_1_e_h"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -254,13 +275,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_1_e_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -283,12 +307,15 @@
                         android:layout_height="50dp"
                         android:orientation="horizontal">
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_2_s_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -299,13 +326,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_2_s_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -316,13 +346,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_2_e_h"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -333,13 +366,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_2_e_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="450dp"
@@ -347,12 +383,15 @@
                         android:layout_marginLeft="40dp"
                         android:orientation="horizontal">
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_2_s_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -363,13 +402,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_2_s_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -380,13 +422,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_2_e_h"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -397,13 +442,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_2_e_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -426,12 +474,15 @@
                         android:layout_height="50dp"
                         android:orientation="horizontal">
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_3_s_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -442,13 +493,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_3_s_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -459,13 +513,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_3_e_h"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -476,13 +533,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_s_3_e_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="450dp"
@@ -490,12 +550,15 @@
                         android:layout_marginLeft="40dp"
                         android:orientation="horizontal">
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_3_s_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -506,13 +569,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_3_s_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -522,14 +588,18 @@
                             android:textSize="25sp"
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
+
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_3_e_h"
                             android:layout_width="70dp"
+                            android:layout_height="match_parent"
                             android:layout_marginLeft="20dp"
+                            android:background="@color/colorEditor2"
+                            android:gravity="center"
                             android:singleLine="true"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textColor="@color/white"
+                            android:textSize="21sp" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
@@ -540,13 +610,16 @@
                             android:textColor="@color/white"
                             android:textStyle="bold"/>
                         <EditText
-                            style="@style/setting_line_data"
+                            android:id="@+id/et_setting_p_3_e_m"
                             android:layout_width="70dp"
-                            android:layout_marginLeft="20dp"
+                            android:layout_height="match_parent"
                             android:singleLine="true"
+                            android:gravity="center"
                             android:text=""
-                            android:textSize="20sp"
-                            android:background="#87c947" />
+                            android:textSize="21sp"
+                            android:textColor="@color/white"
+                            android:background="@color/colorEditor2"
+                            android:layout_marginLeft="20dp" />
                     </LinearLayout>
                 </LinearLayout>
 

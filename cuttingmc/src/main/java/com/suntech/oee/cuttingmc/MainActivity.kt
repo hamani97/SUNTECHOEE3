@@ -113,8 +113,26 @@ class MainActivity : BaseActivity() {
     }
 
     private fun updateView() {
+        updateWorkTimeManual()
         if (AppGlobal.instance.isOnline(this)) btn_wifi_state.isSelected = true
         else btn_wifi_state.isSelected = false
+    }
+
+    private fun updateWorkTimeManual() {
+        val today = DateTime()
+        val yesterday = today.plusDays(-1)
+
+        val list = AppGlobal.instance.get_today_work_time_manual()
+        list.getJSONObject(0).put("date",today.toString("yyyy-MM-dd"))
+        list.getJSONObject(1).put("date",today.toString("yyyy-MM-dd"))
+        list.getJSONObject(2).put("date",today.toString("yyyy-MM-dd"))
+        AppGlobal.instance.set_today_work_time_manual(list)
+
+        val ylist = AppGlobal.instance.get_prev_work_time_manual()
+        ylist.getJSONObject(0).put("date",yesterday.toString("yyyy-MM-dd"))
+        ylist.getJSONObject(1).put("date",yesterday.toString("yyyy-MM-dd"))
+        ylist.getJSONObject(2).put("date",yesterday.toString("yyyy-MM-dd"))
+        AppGlobal.instance.set_prev_work_time_manual(ylist)
     }
 
     private fun initView() {
