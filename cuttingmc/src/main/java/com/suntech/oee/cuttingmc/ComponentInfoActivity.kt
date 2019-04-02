@@ -14,14 +14,13 @@ import com.suntech.oee.cuttingmc.base.BaseActivity
 import com.suntech.oee.cuttingmc.common.AppGlobal
 import kotlinx.android.synthetic.main.activity_component_info.*
 import kotlinx.android.synthetic.main.layout_top_menu_2.*
-import java.util.ArrayList
-import java.util.HashMap
+import java.util.*
 
 class ComponentInfoActivity : BaseActivity() {
 
     private var _selected_wos_idx : String = ""
-    private var _selected_wos_no : String = ""
     private var _selected_component_idx : String = ""
+    private var _selected_component_code : String = ""
     private var _selected_size_idx : String = ""
 
     private var _selected_layer_no : String = ""
@@ -29,6 +28,8 @@ class ComponentInfoActivity : BaseActivity() {
 
     private var _list_for_wos_adapter: ListWosAdapter? = null
     private var _list_for_wos: ArrayList<HashMap<String, String>> = arrayListOf()
+
+    var _selected_wos_index = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,17 +41,22 @@ class ComponentInfoActivity : BaseActivity() {
     private fun initView() {
         tv_title.setText("1 Shift 07:00 - 16:00")
 
-        tv_compo_wos.text = AppGlobal.instance.get_compo_wosno()
+        tv_compo_wos.text = AppGlobal.instance.get_compo_wos()
         tv_compo_model.text = AppGlobal.instance.get_compo_model()
         tv_compo_style.text = AppGlobal.instance.get_compo_style()
         tv_compo_component.text = AppGlobal.instance.get_compo_component()
         tv_compo_size.text = AppGlobal.instance.get_compo_size()
-        tv_compo_target.text = AppGlobal.instance.get_compo_target()
         tv_compo_layer.text = AppGlobal.instance.get_compo_layer()
+        tv_compo_target.text = AppGlobal.instance.get_compo_target()
+
+        // set hidden value
+        _selected_wos_idx = AppGlobal.instance.get_compo_wos_idx()
+        _selected_component_idx = AppGlobal.instance.get_compo_component_idx()
+        _selected_size_idx = AppGlobal.instance.get_compo_size_idx()
 
         btn_setting_confirm.setOnClickListener {
             if (tv_compo_wos.text.toString() == "" || tv_compo_model.text.toString() == "" ||
-                    tv_compo_style.text.toString() == "" || tv_compo_size.text.toString() == "" || tv_compo_layer.text.toString() == "") {
+                    tv_compo_style.text.toString() == "" || tv_compo_size.text.toString() == "") {
                 Toast.makeText(this, getString(R.string.msg_require_info), Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -62,6 +68,7 @@ class ComponentInfoActivity : BaseActivity() {
         lv_wos_info.adapter = _list_for_wos_adapter
 
         lv_wos_info.setOnItemClickListener { adapterView, view, i, l ->
+            _selected_wos_index = i
             _list_for_wos_adapter?.select(i)
             _list_for_wos_adapter?.notifyDataSetChanged()
         }
@@ -75,17 +82,25 @@ class ComponentInfoActivity : BaseActivity() {
     }
 
     private fun saveSettingData() {
-        AppGlobal.instance.set_compo_wosno(tv_compo_wos.text.toString())
+
+        AppGlobal.instance.set_compo_wos(tv_compo_wos.text.toString())
         AppGlobal.instance.set_compo_model(tv_compo_model.text.toString())
         AppGlobal.instance.set_compo_style(tv_compo_style.text.toString())
-
         AppGlobal.instance.set_compo_component(tv_compo_component.text.toString())
         AppGlobal.instance.set_compo_size(tv_compo_size.text.toString())
+        AppGlobal.instance.set_compo_layer(tv_compo_layer.text.toString())
         AppGlobal.instance.set_compo_target(tv_compo_target.text.toString())
 
-        AppGlobal.instance.set_compo_layer(tv_compo_layer.text.toString())
+        // set hidden value
+        AppGlobal.instance.set_compo_wos_idx(_selected_wos_idx)
+        AppGlobal.instance.set_compo_component_idx(_selected_component_idx)
+        AppGlobal.instance.set_compo_size_idx(_selected_size_idx)
 
-        finish()
+        if (_selected_wos_index > -1) {
+            finish(true, 1, "ok", _list_for_wos[_selected_wos_index])
+        } else {
+            finish()
+        }
     }
 
     private fun fetchWosAll() {
@@ -143,7 +158,6 @@ class ComponentInfoActivity : BaseActivity() {
                 startActivity(intent, { r, c, m, d ->
                     if (r) {
                         _selected_wos_idx = lists[c]["idx"] ?: ""
-                        _selected_wos_no = lists[c]["wosno"] ?: ""
                         tv_compo_wos.text = lists[c]["wosno"] ?: ""
                         tv_compo_model.text = lists[c]["model"] ?: ""
                         tv_compo_style.text = lists[c]["styleno"] ?: ""
@@ -159,13 +173,14 @@ class ComponentInfoActivity : BaseActivity() {
     }
 
     private fun fetchComponentData() {
-        if (_selected_wos_no == "") {
+        if (tv_compo_wos.text.toString() == "") {
+            Toast.makeText(this, getString(R.string.msg_no_setting), Toast.LENGTH_SHORT).show()
             return
         }
         val uri = "/wos.php"
         var params = listOf(
                 "code" to "wos_comp",
-                "wosno" to _selected_wos_no)
+                "wosno" to tv_compo_wos.text.toString())
 
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
@@ -189,6 +204,7 @@ class ComponentInfoActivity : BaseActivity() {
                 startActivity(intent, { r, c, m, d ->
                     if (r) {
                         _selected_component_idx = lists[c]["idx"] ?: ""
+                        _selected_component_code = lists[c]["c_code"] ?: ""
                         tv_compo_component.text = lists[c]["c_name"] ?: ""
                     }
                 })
@@ -199,13 +215,14 @@ class ComponentInfoActivity : BaseActivity() {
     }
 
     private fun fetchSizeData() {
-        if (_selected_wos_no == "") {
+        if (tv_compo_wos.text.toString() == "") {
+            Toast.makeText(this, getString(R.string.msg_no_setting), Toast.LENGTH_SHORT).show()
             return
         }
         val uri = "/wos.php"
         var params = listOf(
                 "code" to "wos_size",
-                "wosno" to _selected_wos_no)
+                "wosno" to tv_compo_wos.text.toString())
 
         request(this, uri, false, params, { result ->
             var code = result.getString("code")
@@ -253,6 +270,7 @@ class ComponentInfoActivity : BaseActivity() {
             val size2 = item["size"] ?: ""
             val target2 = item["target"] ?: ""
             if (wos == wos2 && size == size2 && target == target2) {
+                _selected_wos_index = j
                 _list_for_wos_adapter?.select(j)
                 _list_for_wos_adapter?.notifyDataSetChanged()
                 lv_wos_info.smoothScrollToPosition(j)
@@ -314,7 +332,7 @@ class ComponentInfoActivity : BaseActivity() {
             this._context = context
         }
 
-        fun select(index:Int) {_selected_index=index}
+        fun select(index:Int) { _selected_index = index }
         fun getSelected(): Int { return _selected_index }
 
         override fun getCount(): Int { return _list.size }

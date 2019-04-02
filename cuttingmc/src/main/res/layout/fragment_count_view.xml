@@ -343,7 +343,7 @@
                         android:orientation="horizontal"
                         android:background="#000">
                         <ListView
-                            android:id="@+id/lv_available_info"
+                            android:id="@+id/lv_wos_info2"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:divider="@color/list_item_bg_color"

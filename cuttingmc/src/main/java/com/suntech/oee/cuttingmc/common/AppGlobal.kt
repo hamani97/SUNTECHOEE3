@@ -355,17 +355,28 @@ class AppGlobal private constructor() {
     fun set_long_touch(state: Boolean) { UtilLocalStorage.setBoolean(instance._context!!, "current_long_touch", state) }
     fun get_long_touch() : Boolean { return UtilLocalStorage.getBoolean(instance._context!!, "current_long_touch") }
 
-    // Component 세팅값
-    fun set_compo_wosno(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wosno", value) }
-    fun get_compo_wosno() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wosno") }
+    fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
+    fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
+
+
+    // Component 필터 세팅값
+    fun set_compo_wos_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wos_idx", idx) }
+    fun get_compo_wos_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wos_idx") }
+    fun set_compo_wos(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_wos", value) }
+    fun get_compo_wos() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_wos") }
+
     fun set_compo_model(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_model", value) }
     fun get_compo_model() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_model") }
     fun set_compo_style(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_style", value) }
     fun get_compo_style() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_style") }
 
+    fun set_compo_component_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_component_idx", idx) }
+    fun get_compo_component_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_component_idx") }
     fun set_compo_component(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_component", value) }
     fun get_compo_component() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_component") }
-
+//
+    fun set_compo_size_idx(idx: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_size_idx", idx) }
+    fun get_compo_size_idx() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_size_idx") }
     fun set_compo_size(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_size", value) }
     fun get_compo_size() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_size") }
     fun set_compo_target(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_target", value) }
@@ -374,9 +385,6 @@ class AppGlobal private constructor() {
     fun set_compo_layer(value: String) { UtilLocalStorage.setString(instance._context!!, "current_compo_layer", value) }
     fun get_compo_layer() : String { return UtilLocalStorage.getString(instance._context!!, "current_compo_layer") }
 
-
-    fun set_layer_pairs(layer_no: String, pair: String) { UtilLocalStorage.setString(instance._context!!, "current_layer_" + layer_no, pair) }
-    fun get_layer_pairs(layer_no: String) : String { return UtilLocalStorage.getString(instance._context!!, "current_layer_" + layer_no) }
 
     fun set_target_setting(value: Int) { UtilLocalStorage.setInt(instance._context!!, "current_target_setting", value) }
     fun get_target_setting() : Int { return UtilLocalStorage.getInt(instance._context!!, "current_target_setting") }

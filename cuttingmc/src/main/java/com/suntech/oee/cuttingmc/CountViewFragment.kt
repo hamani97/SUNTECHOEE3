@@ -5,9 +5,12 @@ import android.content.*
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.BaseAdapter
+import android.widget.TextView
 import android.widget.Toast
 import com.suntech.oee.cuttingmc.base.BaseFragment
 import com.suntech.oee.cuttingmc.common.AppGlobal
@@ -20,10 +23,13 @@ import org.joda.time.DateTime
 class CountViewFragment : BaseFragment() {
 
     private var is_loop :Boolean = false
-    private var _list: ArrayList<HashMap<String, String>> = arrayListOf()
+    private var _list: ArrayList<HashMap<String, String>> = arrayListOf()           // Color
     private var _list_for_db: ArrayList<HashMap<String, String>> = arrayListOf()
 
     private var _total_target = 0
+
+    private var _list_for_wos_adapter: ListWosAdapter? = null
+    private var _list_for_wos: java.util.ArrayList<java.util.HashMap<String, String>> = arrayListOf()
 
     private val _need_to_refresh = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -33,6 +39,9 @@ class CountViewFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.fragment_count_view, container, false)
+
+        _list_for_wos_adapter = ListWosAdapter(activity, _list_for_wos)
+        lv_wos_info2.adapter = _list_for_wos_adapter
     }
 
     override fun onResume() {
@@ -40,6 +49,7 @@ class CountViewFragment : BaseFragment() {
         activity.registerReceiver(_need_to_refresh, IntentFilter("need.refresh"))
         is_loop=true
         updateView()
+        fetchWosAll()
         startHandler()
     }
 
@@ -58,6 +68,7 @@ class CountViewFragment : BaseFragment() {
             ll_component_count.visibility = View.VISIBLE
         }
 
+        // Worker info
         val no = AppGlobal.instance.get_worker_no()
         val name = AppGlobal.instance.get_worker_name()
         if (no== "" || name == "") {
@@ -66,12 +77,11 @@ class CountViewFragment : BaseFragment() {
         }
 
         updateView()
+        fetchColorData()     // Get Color
 
-        if ((activity as MainActivity).countViewType != 1) {
-            fetchData()
+        if ((activity as MainActivity).countViewType == 1) {
             countTarget()
         } else {
-            fetchDataComponent()
             countTargetComponent()
         }
     }
@@ -129,12 +139,11 @@ class CountViewFragment : BaseFragment() {
         }
 
         updateView()
+        fetchColorData()     // Get Color
 
-        if ((activity as MainActivity).countViewType != 1) {
-            fetchData()
+        if ((activity as MainActivity).countViewType == 1) {
             countTarget()
         } else {
-            fetchDataComponent()
             countTargetComponent()
         }
     }
@@ -386,7 +395,8 @@ class CountViewFragment : BaseFragment() {
         }, 1000)
     }
 
-    private fun fetchData() {
+    // Get Color code
+    private fun fetchColorData() {
 
         var list = AppGlobal.instance.get_color_code()
 
@@ -403,8 +413,109 @@ class CountViewFragment : BaseFragment() {
         }
     }
 
-    private fun fetchDataComponent() {
+    private fun fetchWosAll() {
+        val uri = "/wos.php"
+        var params = listOf("code" to "wos")
 
+        getBaseActivity().request(activity, uri, false, params, { result ->
+            var code = result.getString("code")
+            var msg = result.getString("msg")
+            if (code == "00") {
+                var list = result.getJSONArray("item")
+                for (i in 0..(list.length() - 1)) {
+                    val item = list.getJSONObject(i)
+                    var map = hashMapOf(
+                            "wosno" to item.getString("wosno"),
+                            "styleno" to item.getString("styleno"),
+                            "model" to item.getString("model"),
+                            "size" to item.getString("size"),
+                            "target" to item.getString("target")
+                    )
+                    _list_for_wos.add(map)
+                }
+                _list_for_wos_adapter?.notifyDataSetChanged()
+//                filterWosData()
+            } else {
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private class ListWosAdapter(context: Context, list: java.util.ArrayList<java.util.HashMap<String, String>>) : BaseAdapter() {
+
+        private var _list: java.util.ArrayList<java.util.HashMap<String, String>>
+        private val _inflator: LayoutInflater
+        private var _context : Context? =null
+        private var _selected_index = -1
+
+        init {
+            this._inflator = LayoutInflater.from(context)
+            this._list = list
+            this._context = context
+        }
+
+        fun select(index:Int) { _selected_index = index }
+        fun getSelected(): Int { return _selected_index }
+
+        override fun getCount(): Int { return _list.size }
+        override fun getItem(position: Int): Any { return _list[position] }
+        override fun getItemId(position: Int): Long { return position.toLong() }
+
+        override fun getView(position: Int, convertView: View?, parent: ViewGroup): View? {
+            val view: View?
+            val vh: ViewHolder
+            if (convertView == null) {
+                view = this._inflator.inflate(R.layout.list_wos_info, parent, false)
+                vh = ViewHolder(view)
+                view.tag = vh
+            } else {
+                view = convertView
+                vh = view.tag as ViewHolder
+            }
+
+            vh.tv_item_wosno.text = _list[position]["wosno"]
+            vh.tv_item_model.text = _list[position]["model"]
+            vh.tv_item_size.text = _list[position]["size"]
+            vh.tv_item_target.text = _list[position]["target"]
+            vh.tv_item_actual.text = "0"
+            vh.tv_item_balance.text = _list[position]["target"]
+
+            if (_selected_index==position) {
+                vh.tv_item_wosno.setTextColor(ContextCompat.getColor(_context, R.color.list_item_filtering_text_color))
+                vh.tv_item_model.setTextColor(ContextCompat.getColor(_context, R.color.list_item_filtering_text_color))
+                vh.tv_item_size.setTextColor(ContextCompat.getColor(_context, R.color.list_item_filtering_text_color))
+                vh.tv_item_target.setTextColor(ContextCompat.getColor(_context, R.color.list_item_filtering_text_color))
+                vh.tv_item_actual.setTextColor(ContextCompat.getColor(_context, R.color.list_item_filtering_text_color))
+                vh.tv_item_balance.setTextColor(ContextCompat.getColor(_context, R.color.list_item_filtering_text_color))
+            } else {
+                vh.tv_item_wosno.setTextColor(ContextCompat.getColor(_context, R.color.list_item_text_color))
+                vh.tv_item_model.setTextColor(ContextCompat.getColor(_context, R.color.list_item_text_color))
+                vh.tv_item_size.setTextColor(ContextCompat.getColor(_context, R.color.list_item_text_color))
+                vh.tv_item_target.setTextColor(ContextCompat.getColor(_context, R.color.list_item_text_color))
+                vh.tv_item_actual.setTextColor(ContextCompat.getColor(_context, R.color.list_item_text_color))
+                vh.tv_item_balance.setTextColor(ContextCompat.getColor(_context, R.color.list_item_text_color))
+            }
+
+            return view
+        }
+
+        private class ViewHolder(row: View?) {
+            val tv_item_wosno: TextView
+            val tv_item_model: TextView
+            val tv_item_size: TextView
+            val tv_item_target: TextView
+            val tv_item_actual: TextView
+            val tv_item_balance: TextView
+
+            init {
+                this.tv_item_wosno = row?.findViewById<TextView>(R.id.tv_item_wosno) as TextView
+                this.tv_item_model = row?.findViewById<TextView>(R.id.tv_item_model) as TextView
+                this.tv_item_size = row?.findViewById<TextView>(R.id.tv_item_size) as TextView
+                this.tv_item_target = row?.findViewById<TextView>(R.id.tv_item_target) as TextView
+                this.tv_item_actual = row?.findViewById<TextView>(R.id.tv_item_actual) as TextView
+                this.tv_item_balance = row?.findViewById<TextView>(R.id.tv_item_balance) as TextView
+            }
+        }
     }
 }
 

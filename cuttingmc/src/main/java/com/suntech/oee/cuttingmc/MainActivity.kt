@@ -42,8 +42,7 @@ class MainActivity : BaseActivity() {
 
     var _stitch_db = DBHelperForCount(this)
 
-    // Count view 화면값 1=Total count, 2=Component count
-    var countViewType = 1
+    var countViewType = 1       // Count view 화면값 1=Total count, 2=Component count
 
     private var _doubleBackToExitPressedOnce = false
     private var _last_count_received_time = DateTime()

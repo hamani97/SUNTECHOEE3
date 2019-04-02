@@ -27,12 +27,12 @@ class SettingActivity : BaseActivity() {
     private var _selected_mc_no_idx: String = ""
     private var _selected_mc_model_idx: String = ""
 
-    private var _selected_layer_pair_1: String = ""
-    private var _selected_layer_pair_2: String = ""
-    private var _selected_layer_pair_4: String = ""
-    private var _selected_layer_pair_6: String = ""
-    private var _selected_layer_pair_8: String = ""
-    private var _selected_layer_pair_10: String = ""
+    private var _selected_layer_1: String = ""
+    private var _selected_layer_2: String = ""
+    private var _selected_layer_4: String = ""
+    private var _selected_layer_6: String = ""
+    private var _selected_layer_8: String = ""
+    private var _selected_layer_10: String = ""
 
     val _broadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -80,13 +80,12 @@ class SettingActivity : BaseActivity() {
         _selected_mc_model_idx = AppGlobal.instance.get_mc_model_idx()
 
         // count setting
-        _selected_layer_pair_1 = AppGlobal.instance.get_layer_pairs("1")
-        _selected_layer_pair_2 = AppGlobal.instance.get_layer_pairs("2")
-        _selected_layer_pair_4 = AppGlobal.instance.get_layer_pairs("4")
-        _selected_layer_pair_6 = AppGlobal.instance.get_layer_pairs("6")
-        _selected_layer_pair_8 = AppGlobal.instance.get_layer_pairs("8")
-        _selected_layer_pair_10 = AppGlobal.instance.get_layer_pairs("10")
-
+        _selected_layer_1 = AppGlobal.instance.get_layer_pairs("1")
+        _selected_layer_2 = AppGlobal.instance.get_layer_pairs("2")
+        _selected_layer_4 = AppGlobal.instance.get_layer_pairs("4")
+        _selected_layer_6 = AppGlobal.instance.get_layer_pairs("6")
+        _selected_layer_8 = AppGlobal.instance.get_layer_pairs("8")
+        _selected_layer_10 = AppGlobal.instance.get_layer_pairs("10")
 
         // set widget value
         // system setting
@@ -106,12 +105,12 @@ class SettingActivity : BaseActivity() {
         sw_long_touch.isChecked = AppGlobal.instance.get_long_touch()
 
         // count setting
-        if (_selected_layer_pair_1 != "") tv_layer_1.text = _selected_layer_pair_1 + " pair"
-        if (_selected_layer_pair_2 != "") tv_layer_2.text = _selected_layer_pair_2 + " pair"
-        if (_selected_layer_pair_4 != "") tv_layer_4.text = _selected_layer_pair_4 + " pair"
-        if (_selected_layer_pair_6 != "") tv_layer_6.text = _selected_layer_pair_6 + " pair"
-        if (_selected_layer_pair_8 != "") tv_layer_8.text = _selected_layer_pair_8 + " pair"
-        if (_selected_layer_pair_10 != "") tv_layer_10.text = _selected_layer_pair_10 + " pair"
+        if (_selected_layer_1 != "") tv_layer_1.text = _selected_layer_1 + " pair"
+        if (_selected_layer_2 != "") tv_layer_2.text = _selected_layer_2 + " pair"
+        if (_selected_layer_4 != "") tv_layer_4.text = _selected_layer_4 + " pair"
+        if (_selected_layer_6 != "") tv_layer_6.text = _selected_layer_6 + " pair"
+        if (_selected_layer_8 != "") tv_layer_8.text = _selected_layer_8 + " pair"
+        if (_selected_layer_10 != "") tv_layer_10.text = _selected_layer_10 + " pair"
 
         // target setting
         if (AppGlobal.instance.get_target_setting() == 0) targetTypeChange(11)
@@ -133,12 +132,12 @@ class SettingActivity : BaseActivity() {
         tv_setting_mc_model.setOnClickListener { fetchDataForMCModel() }
 
         // Count setting button listener
-        tv_layer_1.setOnClickListener { fetchLayerPairs("1") }
-        tv_layer_2.setOnClickListener { fetchLayerPairs("2") }
-        tv_layer_4.setOnClickListener { fetchLayerPairs("4") }
-        tv_layer_6.setOnClickListener { fetchLayerPairs("6") }
-        tv_layer_8.setOnClickListener { fetchLayerPairs("8") }
-        tv_layer_10.setOnClickListener { fetchLayerPairs("10") }
+        tv_layer_1.setOnClickListener { fetchPairData("1") }
+        tv_layer_2.setOnClickListener { fetchPairData("2") }
+        tv_layer_4.setOnClickListener { fetchPairData("4") }
+        tv_layer_6.setOnClickListener { fetchPairData("6") }
+        tv_layer_8.setOnClickListener { fetchPairData("8") }
+        tv_layer_10.setOnClickListener { fetchPairData("10") }
 
         // Target setting button listener
         btn_server_accumulate.setOnClickListener { targetTypeChange(11) }
@@ -185,46 +184,50 @@ class SettingActivity : BaseActivity() {
         if (et_setting_port.text.toString() == "") et_setting_port.setText("80")
     }
 
-    private fun fetchLayerPairs(tv_no: String) {
+    private fun fetchPairData(layer_no: String) {
         var arr: ArrayList<String> = arrayListOf<String>()
         var lists : ArrayList<HashMap<String, String>> = arrayListOf()
 
         arr.add("0.5 pair")
         lists.add(hashMapOf("pair" to "0.5", "desc" to "0.5 pair"))
+
         for (i in 1..5) {
             var num = i.toString()
             arr.add(num + " pair")
             lists.add(hashMapOf("pair" to num, "desc" to num + " pair"))
         }
 
+        arr.add("None")
+        lists.add(hashMapOf("pair" to "", "desc" to ""))
+
         val intent = Intent(this, PopupSelectList::class.java)
         intent.putStringArrayListExtra("list", arr)
         startActivity(intent, { r, c, m, d ->
             if (r) {
-                when (tv_no) {
+                when (layer_no) {
                     "1" -> {
                         tv_layer_1.text = lists[c]["desc"] ?: ""
-                        _selected_layer_pair_1 = lists[c]["pair"] ?: ""
+                        _selected_layer_1 = lists[c]["pair"] ?: ""
                     }
                     "2" -> {
                         tv_layer_2.text = lists[c]["desc"] ?: ""
-                        _selected_layer_pair_2 = lists[c]["pair"] ?: ""
+                        _selected_layer_2 = lists[c]["pair"] ?: ""
                     }
                     "4" -> {
                         tv_layer_4.text = lists[c]["desc"] ?: ""
-                        _selected_layer_pair_4 = lists[c]["pair"] ?: ""
+                        _selected_layer_4 = lists[c]["pair"] ?: ""
                     }
                     "6" -> {
                         tv_layer_6.text = lists[c]["desc"] ?: ""
-                        _selected_layer_pair_6 = lists[c]["pair"] ?: ""
+                        _selected_layer_6 = lists[c]["pair"] ?: ""
                     }
                     "8" -> {
                         tv_layer_8.text = lists[c]["desc"] ?: ""
-                        _selected_layer_pair_8 = lists[c]["pair"] ?: ""
+                        _selected_layer_8 = lists[c]["pair"] ?: ""
                     }
                     "10" -> {
                         tv_layer_10.text = lists[c]["desc"] ?: ""
-                        _selected_layer_pair_10 = lists[c]["pair"] ?: ""
+                        _selected_layer_10 = lists[c]["pair"] ?: ""
                     }
                 }
             }
@@ -271,12 +274,12 @@ class SettingActivity : BaseActivity() {
         AppGlobal.instance.set_long_touch(sw_long_touch.isChecked)
 
         // count layer
-        AppGlobal.instance.set_layer_pairs("1", _selected_layer_pair_1)
-        AppGlobal.instance.set_layer_pairs("2", _selected_layer_pair_2)
-        AppGlobal.instance.set_layer_pairs("4", _selected_layer_pair_4)
-        AppGlobal.instance.set_layer_pairs("6", _selected_layer_pair_6)
-        AppGlobal.instance.set_layer_pairs("8", _selected_layer_pair_8)
-        AppGlobal.instance.set_layer_pairs("10", _selected_layer_pair_10)
+        AppGlobal.instance.set_layer_pairs("1", _selected_layer_1)
+        AppGlobal.instance.set_layer_pairs("2", _selected_layer_2)
+        AppGlobal.instance.set_layer_pairs("4", _selected_layer_4)
+        AppGlobal.instance.set_layer_pairs("6", _selected_layer_6)
+        AppGlobal.instance.set_layer_pairs("8", _selected_layer_8)
+        AppGlobal.instance.set_layer_pairs("10", _selected_layer_10)
 
         // target type
         AppGlobal.instance.set_target_setting(_selected_target_type)
